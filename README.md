@@ -23,8 +23,6 @@ input: `Event`
 
 output: `ReconstructedPath`
 
-<span style="color:grey">
-
 ### (Verification)
 The results of the reconstruction step are verified against the initial physical assumption about what's happening inside the detector.
 
@@ -39,8 +37,6 @@ input: Collection of `Score`s
 
 output: Some kind of statistical analysis
 
-</span>
-
 ## Program Architecture
 Goals:
 * Maintain good seperation between modules, facilitating parallel development.
@@ -50,14 +46,9 @@ Goals:
 * `generation`
 * `simulation`
 * `reconstruction`
-
-<span style="color:grey">
-
 * (`verification`)
 * (`statistics`)
 * (...)
-
-</span>
 
 ### Common (core) types
 * `EventId` (used for referrring to events)
