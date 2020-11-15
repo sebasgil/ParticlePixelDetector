@@ -75,7 +75,12 @@ Generation should only be concerned with the physical system (e.g. collision, de
 
 Simulation and reconstruction both heavily rely on `DetectorGeometry` and some kind of physical theory (WIP, see below).
 
-## Issues so far
+## Issues
+A simpler architecture might be sufficient.
+
 How do we plug in varying physical theories in order to verify them?
 
 How do we store / transfer events between program steps?
+
+## See also
+<https://lhcb-comp.web.cern.ch/General/Publications/longpap-a152.pdf>
