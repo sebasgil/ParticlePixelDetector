@@ -1,5 +1,7 @@
 # 15.11.2020 Meeting Protocol
 
+edit: switch to own branch
+
 ## 1. Meeting Plan
 
 * GitLab configuration
