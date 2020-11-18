@@ -4,6 +4,8 @@ Testing of program behaviour.
 import unittest
 from typing import List
 import common
+import simulation
+import reconstruction
 
 class EventGeneratorTest(unittest.TestCase):
     """
@@ -37,5 +39,39 @@ class EventGeneratorTest(unittest.TestCase):
                     .format(type(one_id))
         )
 
+class IntegrationTest(unittest.TestCase):
+    """
+    Test all components working together.
+    """
+
+    # For now this just serves as an example of how the library is
+    # intended to be used.
+    def test_implementated(self):
+        """
+        An example of how the program is to be used.
+
+        Will succeed once the most important functions have been
+        implemented.
+        """
+        # Setup
+        # a detector geometry, passed to all compoents as configuration
+        geometry = common.DetectorGeometry()
+        # initialize a new event generator
+        event_generator = simulation.EventGenerator(geometry)
+        # initialize a new event reconstructor
+        reconstructor = reconstruction.Reconstructor(geometry)
+
+        # generate a single event
+        event = event_generator.get_random_event()
+        # reconstruct the originial path
+        path = reconstructor.reconstruct_from_event(event)
+
+        # Check if the the event and path are not None If they are non,
+        # that means the functions that generated them have not yet been
+        # implemented and the test fails.
+        self.assertNotEqual(event, None)
+        self.assertNotEqual(path, None)
+
 if __name__ == '__main__':
+    # execute all tests
     unittest.main()

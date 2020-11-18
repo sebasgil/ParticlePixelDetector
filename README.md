@@ -1,5 +1,27 @@
 # ParticlePixelDetector
 
+## Example usage
+```python
+# 1. Setup
+# a detector geometry, passed to all components as configuration
+geometry = common.DetectorGeometry()
+# initialize a new event generator
+event_generator = simulation.EventGenerator(geometry)
+# initialize a new event reconstructor
+reconstructor = reconstruction.Reconstructor(geometry)
+
+# 2. Fun :)
+# generate a single event
+event = event_generator.get_random_event()
+# reconstruct the originial path
+path = reconstructor.reconstruct_from_event(event)
+```
+
+## Testing
+See file `testing.py` and also the documentation of `unittest` module from the standard library.
+
+To run tests execute `python testing.py` in your console.
+
 ## The life of an event
 
 ### Generation
