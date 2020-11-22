@@ -1,5 +1,6 @@
 
-Information from 1st meeting:
+# Information from 1st meeting:
+
 * 2 people need to create their SSH key. (Shobith and Varun)
 * Shobith will organize the meetings and set up calls.
 * Sebastian will make the protocols.
