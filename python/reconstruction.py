@@ -18,7 +18,7 @@ class Reconstructor:
     def __init__(self, geometry: DetectorGeometry):
         pass
 
-    def reconstruct_from_event(self, event: Event):
+    def reconstruct_from_event(self, event: Event) -> ReconstructedPath:
         """
         Reconstruct a single path from a single event.
 

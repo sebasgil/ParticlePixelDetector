@@ -19,7 +19,7 @@ class PathGenerator:
     def __init__(self, geometry: DetectorGeometry):
         pass
 
-    def get_random_path(self) -> ParticlePath:
+    def generate_random_path(self) -> ParticlePath:
         """
         Return a randomly generated trajectory through the detector.
         """
