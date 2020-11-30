@@ -18,9 +18,11 @@ path = reconstructor.reconstruct_from_event(event)
 ```
 
 ## Testing
-See file `testing.py` and also the documentation of `unittest` module from the standard library.
+You need `pytest` installed in order to run the tests, see [pytest documentation](https://docs.pytest.org/en/stable/) for instructions.
 
-To run tests execute `python testing.py` in your console.
+The tests are located in `./python/test`.
+
+To run them execute `pytest` in your console.
 
 ## The life of an event
 
