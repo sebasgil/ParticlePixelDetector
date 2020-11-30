@@ -29,12 +29,12 @@ A path thorugh the dectector is randomly picked and represented by some data typ
 
 input: Nothing
 
-output: `PhysicalPath`
+output: `ParticlePath`
 
 ### Simulation
 The generated path is used to simulate what a real physical detector would output.
 
-input: `PhysicalPath`
+input: `ParticlePath`
 
 output: `Event`
 
@@ -48,7 +48,7 @@ output: `ReconstructedPath`
 ### (Verification)
 The results of the reconstruction step are verified against the initial physical assumption about what's happening inside the detector.
 
-input: `PhysicalPath`, `ReconstructedPath`
+input: `ParticlePath`, `ReconstructedPath`
 
 output: `Score`
 
