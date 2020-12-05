@@ -1,15 +1,12 @@
-"""
-Tests for the "generation" module
-"""
+"""Tests for the "generation" module."""
 
 import numpy  # type: ignore
+import pytest
 import generation
 
 
 def test_unifrom_sphere_generator():
-    """
-    Verify properties of the UniformSphereGenerator
-    """
+    """Verify properties of the UniformSphereGenerator."""
     rng = generation.UniformSphereGenerator(0)
     for _ in range(50):
         point = rng.generate_random_point()
@@ -21,8 +18,47 @@ def test_unifrom_sphere_generator():
         assert numpy.isclose(numpy.linalg.norm(point), 1)
 
 
+def test_uniform_solid_angle_generator():
+    """Verify properties of the UniformSolidAngleGenerator."""
+    rng = (
+        generation.UniformSolidAngleGenerator(
+            0, numpy.array([1, 0, 0]), 5 / 360 * 2 * numpy.pi
+        )
+    )
+    for _ in range(50):
+        point = rng.generate_random_point()
+        # verify it's a numpy array
+        assert isinstance(point, numpy.ndarray)
+        # verify it's 3d point
+        assert point.shape == (3,)
+        # verify it's on the surface of the unit sphere
+        assert numpy.isclose(numpy.linalg.norm(point), 1)
+
+    #
+    # TEST CASES with initialization errors
+    #
+
+    # opening angles out of range
+    for invalid_angle in [-5, 10, 7, numpy.inf]:
+        with pytest.raises(ValueError):
+            rng = (
+                generation.UniformSolidAngleGenerator(
+                    0, numpy.array([1, 0, 0]), invalid_angle
+                )
+            )
+
+    # direction vectors to small to be normalized
+    for small_number in [0, 5e-324]:
+        with pytest.raises(ValueError):
+            rng = (
+                generation.UniformSolidAngleGenerator(
+                    0, numpy.array([small_number, 0, 0]), 1
+                )
+            )
+
+
 def test_path_plane_intersection_good():
-    """Test path and plane intersection algorithm.    """
+    """Test path and plane intersection algorithm."""
     #
     # TEST CASES with an intersection
     #
@@ -65,14 +101,11 @@ def test_path_plane_intersection_good():
 
 
 def test_path_generator():
-    """
-    Test the PathGenerator class, which has a public interface.
-    """
+    """Test the PathGenerator class, which has a public interface."""
     # pylint: disable=too-few-public-methods,missing-class-docstring
     class MockGeometry:
-        """
-        small part of DetectorGeometry, for testing purposes
-        """
+        """Small part of DetectorGeometry, for testing purposes."""
+
         def __init__(self, position, direction, opening_angle):
             class Source:
                 def __init__(self):
