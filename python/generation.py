@@ -208,8 +208,19 @@ class UniformSolidAngleGenerator:
         self._opening_angle = opening_angle
         # normalize direction
         self._direction = direction / numpy.linalg.norm(direction)
+        if (
+            numpy.isnan(self._direction).any() or
+            numpy.isinf(self._direction).any()
+        ):
+            # reciprocals of denormalized numbers can overflow apparently
+            # also note that division by zero errors do not occur in numpy
+            # at least not here. Instead the value nan is returned.
+            raise (
+                ValueError(
+                    "direction {} is too small to normalize".format(direction)
+                )
+            )
         # initialize inner rng
-        self._seed = seed
         self._sphere_rng = UniformSphereGenerator(seed)
 
     def generate_random_point(self):
