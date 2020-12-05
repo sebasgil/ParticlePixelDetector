@@ -16,9 +16,9 @@ class ParticlePath:
         Parameters:
         -----------
         origin: 3d numpy array
-            starting point of the path
+            The Starting point of the particles path.
         velocity: 3d numpy array
-            partitcle velocity
+            The partitcles velocity.
         """
         self._origin = origin
         self._velocity = velocity
@@ -50,9 +50,9 @@ class ParticlePath:
         Paramters:
         ----------
         plane_normal: 3d numpy array
-            the planes normal vector
+            The planes normal vector.
         plane_point: 3d numpy array
-            any point on the plane
+            Any point on the plane.
         """
         # plane specified via one point p and a normal vector n
         # solve the equation (r(t) - p) * n = 0 for t.
@@ -139,7 +139,7 @@ class UniformSphereGenerator:
         Paramters:
         ----------
         seed: int
-            seed for the internal random generator
+            Seed for the internal random generator.
         """
         # store for debug purposes
         self._seed = seed
@@ -169,19 +169,25 @@ class UniformSolidAngleGenerator:
     angle cutout of the surface of the unit sphere.  Solid angle cutout
     means the region bounded by the spheres surfaces' intersection with a
     cone, whose tip is centered at the spheres center.
+
+    i.e. "A" in the diagram:
+    https://en.wikipedia.org/wiki/Solid_angle#/media/File:Solid_Angle,_1_Steradian.svg
     """
 
-    def __init__(self, seed, direction, opening_angle):
+    def __init__(self, seed, direction, opening_angle: float):
         """
         Create an instance of UniformSolidAngleGenerator.
 
         Paramters:
         ----------
-        seed: Seed for the random generator
-        direction: direction of the solid angles center axis (vector is
-            normalized internally)
-        opening_angle: opening angle from center axis to rim of solid angle
-            cutout (0 < opening_angle < 2 PI)
+        seed: float
+            Seed for the internal random generator.
+        direction: 3d numpy array
+            Direction of the solid angles center axis (vector is normalized
+            internally).
+        opening_angle: float
+            Opening angle from center axis to rim of solid angle cutout.
+            Must lie between 0 and 2 PI.
         """
         # check if opening_angle values are ok
         if opening_angle < 0 or opening_angle > 2 * numpy.pi:
