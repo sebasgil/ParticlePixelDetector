@@ -21,6 +21,7 @@ class ParticlePath:
         """
         return self._origin + time * self._velocity
 
+    # TODO: does this function really belong in this class?
     def intersection_time_with_plane(self, plane_normal, plane_point):
         # TODO: consider exceptions instead of returning None
         """
