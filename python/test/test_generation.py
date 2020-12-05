@@ -22,9 +22,7 @@ def test_unifrom_sphere_generator():
 
 
 def test_path_plane_intersection_good():
-    """
-    Test the algorithm which computes the intersectoin between a plane and a straight line.
-    """
+    """Test path and plane intersection algorithm.    """
     #
     # TEST CASES with an intersection
     #
@@ -36,11 +34,17 @@ def test_path_plane_intersection_good():
     path_origin = numpy.array([0, 0, 0])
     path_velocity = numpy.array([0, 0, 1])
     path = generation.ParticlePath(path_origin, path_velocity)
-    intersection_time = path.intersection_time_with_plane(plane_normal, plane_point)
+    intersection_time = (
+        path.intersection_time_with_plane(plane_normal, plane_point)
+    )
     assert intersection_time is not None
     intersection_point = path.get_position_at_time(intersection_time)
     assert intersection_point is not None
-    assert numpy.all(numpy.isclose(intersection_point, numpy.array([0, 0, 10])))
+    assert (
+        numpy.all(
+            numpy.isclose(intersection_point, numpy.array([0, 0, 10]))
+        )
+    )
 
     #
     # TEST CASES with no intersection
@@ -54,7 +58,9 @@ def test_path_plane_intersection_good():
     # negative velocity -> no intersection
     path_velocity = numpy.array([0, 0, -1])
     path = generation.ParticlePath(path_origin, path_velocity)
-    intersection_time = path.intersection_time_with_plane(plane_normal, plane_point)
+    intersection_time = (
+        path.intersection_time_with_plane(plane_normal, plane_point)
+    )
     assert intersection_time is None
 
 
@@ -76,12 +82,20 @@ def test_path_generator():
             self.source.direction = direction
             self.source.opening_angle = opening_angle
 
-    geom = MockGeometry(numpy.array([0, 0, 0]), numpy.array([0, 0, 1]), 5 / 360 * 2 * numpy.pi)
+    geom = (
+        MockGeometry(
+            numpy.array([0, 0, 0]),
+            numpy.array([0, 0, 1]),
+            5 / 360 * 2 * numpy.pi
+        )
+    )
     gen = generation.PathGenerator(geom)
     path = gen.generate_random_path()
 
     # xy-plane with z offset of 10
     plane_normal = numpy.array([0, 0, 1])
     plane_point = numpy.array([0, 0, 10])
-    intersection_time = path.intersection_time_with_plane(plane_normal, plane_point)
+    intersection_time = (
+        path.intersection_time_with_plane(plane_normal, plane_point)
+    )
     print(intersection_time)
