@@ -24,6 +24,13 @@ The tests are located in `./python/test`.
 
 To run them execute `pytest` in your console.
 
+## linting, style and type hints
+Linters used so far: pylint, pycodestyle, pydocstyle.
+
+It's good practice to keep lines shorter than 80 characters, i.e. at most 79 characters per line.
+
+Type hints can be verified using mypy (static type checker). It seems like there is currently no good way to include type hints of numpy types, however this will be adressed in the upcoming numpy version 1.20.
+
 ## The life of an event
 
 ### Generation
