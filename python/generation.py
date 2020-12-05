@@ -34,9 +34,13 @@ class ParticlePath:
         # (t * v - p) * n = 0
         # t * v * n - p * n = 0
         # t = p * n / v * n
-        # TODO: handle case where there is no intersection
-        #       or intersection time is astronomical
-        return plane_point.dot(plane_normal) / self._velocity.dot(plane_normal)
+        # TODO: handle case where intersection time is astronomical
+        # i.e. denominator very big
+        intersection_time = plane_point.dot(plane_normal) / self._velocity.dot(plane_normal)
+        if intersection_time < 0:
+            # wrong direction
+            return None
+        return intersection_time
 
 class PathGenerator:
     """
