@@ -4,6 +4,7 @@ Common classes for use in most modules.
 
 EventId = int
 
+
 # TODO: employ singleton pattern
 class EventIdGenerator:
     """
@@ -27,6 +28,7 @@ class EventIdGenerator:
         self.__counter += 1
         return new_id
 
+
 class Event:
     """
     A detector event.
@@ -41,6 +43,7 @@ class Event:
         """
         Returns the events unique id.
         """
+
 
 class DetectorGeometry:
     """

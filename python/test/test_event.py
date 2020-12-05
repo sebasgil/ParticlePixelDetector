@@ -5,6 +5,7 @@ Testing for the Event class.
 from typing import List
 import common
 
+
 # NOTE: the method name needs to start with "test" to be recognized
 # by the unittest test runner. unittest is from the python standard
 # library
@@ -21,6 +22,7 @@ def test_thousand_ids_unique():
     # Check if ids as a list contains the same number of elements as
     # ids as a set.
     assert len(ids) == len(set(ids))
+
 
 def test_return_type():
     """

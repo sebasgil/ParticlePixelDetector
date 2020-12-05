@@ -4,12 +4,14 @@ Reconstruction of paths from events.
 
 from common import DetectorGeometry, Event
 
+
 class ReconstructedPath:
     """
     A single reconstructed path through the Detector.
     """
     def __init__(self):
         pass
+
 
 class Reconstructor:
     """
