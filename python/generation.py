@@ -1,3 +1,4 @@
+# pylint: disable=too-few-public-methods
 """
 Event generation.
 """
@@ -12,7 +13,7 @@ class ParticlePath:
     def __init__(self, origin, velocity):
         self._origin = origin
         self._velocity = velocity
-    
+
     def get_position_at_time(self, time):
         """
         Get particle position along it's path at a given point in time
@@ -20,7 +21,7 @@ class ParticlePath:
         """
         return self._origin + time * self._velocity
 
-    def intersection_time_with_plane(self, planeNormal, planePoint):
+    def intersection_time_with_plane(self, plane_normal, plane_point):
         # TODO: consider exceptions instead of returning None
         """
         WARNING: This function may return None
@@ -35,7 +36,7 @@ class ParticlePath:
         # t = p * n / v * n
         # TODO: handle case where there is no intersection
         #       or intersection time is astronomical
-        return planePoint.dot(planeNormal) / self._velocity.dot(planeNormal)
+        return plane_point.dot(plane_normal) / self._velocity.dot(plane_normal)
 
 class PathGenerator:
     """
