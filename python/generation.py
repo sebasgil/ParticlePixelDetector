@@ -2,8 +2,10 @@
 """
 Event generation.
 """
-import numpy
+from typing import Optional
+import numpy  # type: ignore
 from common import DetectorGeometry
+
 
 # functional description?
 class ParticlePath:
@@ -22,7 +24,7 @@ class ParticlePath:
         return self._origin + time * self._velocity
 
     # TODO: does this function really belong in this class?
-    def intersection_time_with_plane(self, plane_normal, plane_point):
+    def intersection_time_with_plane(self, plane_normal, plane_point) -> Optional[float]:
         # TODO: consider exceptions instead of returning None
         """
         WARNING: This function may return None
@@ -43,6 +45,7 @@ class ParticlePath:
             return None
         return intersection_time
 
+
 class PathGenerator:
     """
     Randomly generates trajectories for use in event simulation.
@@ -50,7 +53,7 @@ class PathGenerator:
     def __init__(self, geometry: DetectorGeometry):
         self._speed_distribution = 1.0
         self._origin_distribution = numpy.array([0.0, 0.0, 0.0])
-        # hardcoded seed for now TODO: chan0ge
+        # hardcoded seed for now TODO: change
         self._rng = UniformSolidAngleGenerator(0, geometry.source.direction, geometry.source.opening_angle)
         self._particle_source = geometry.source.position
 
@@ -77,11 +80,11 @@ class PathGenerator:
         raise NotImplementedError("Only delta distributions are supported for origins currently.")
 
 
-##
-## RANDOM GENERATORS
-##
-## using lots of monte carlo because it's fun and simple
-##
+#
+# RANDOM GENERATORS
+#
+# using lots of monte carlo because it's fun and simple
+#
 
 
 class UniformSphereGenerator:
@@ -107,6 +110,7 @@ class UniformSphereGenerator:
                 point_on_sphere = point_in_cube / numpy.linalg.norm(point_in_cube)
                 return point_on_sphere
             # try again
+
 
 class UniformSolidAngleGenerator:
     """

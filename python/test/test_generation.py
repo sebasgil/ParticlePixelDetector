@@ -2,8 +2,9 @@
 Tests for the "generation" module
 """
 
-import numpy
+import numpy  # type: ignore
 import generation
+
 
 def test_unifrom_sphere_generator():
     """
@@ -19,13 +20,14 @@ def test_unifrom_sphere_generator():
         # verify it's on the surface of the unit sphere
         assert numpy.isclose(numpy.linalg.norm(point), 1)
 
+
 def test_path_plane_intersection_good():
     """
     Test the algorithm which computes the intersectoin between a plane and a straight line.
     """
-    ##
-    ## TEST CASES with an intersection
-    ##
+    #
+    # TEST CASES with an intersection
+    #
 
     # xy-plane with z offset of 10
     plane_normal = numpy.array([0, 0, 1])
@@ -40,9 +42,9 @@ def test_path_plane_intersection_good():
     assert intersection_point is not None
     assert numpy.all(numpy.isclose(intersection_point, numpy.array([0, 0, 10])))
 
-    ##
-    ## TEST CASES with no intersection
-    ##
+    #
+    # TEST CASES with no intersection
+    #
 
     # xy-plane with z offset of 10
     plane_normal = numpy.array([0, 0, 1])
@@ -54,6 +56,7 @@ def test_path_plane_intersection_good():
     path = generation.ParticlePath(path_origin, path_velocity)
     intersection_time = path.intersection_time_with_plane(plane_normal, plane_point)
     assert intersection_time is None
+
 
 def test_path_generator():
     """
