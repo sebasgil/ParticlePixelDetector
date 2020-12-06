@@ -41,11 +41,13 @@ class ParticlePath:
         """
         Compute intersection of path with a plane.
 
-        WARNING: This function may return None
-
         Return the point in time, when the ray intersects the given plane.
         Return None if there is no intersection or the intersection time is
         too big.
+
+        Warning
+        -------
+        This function may return None
 
         Parameters
         ----------
@@ -53,6 +55,13 @@ class ParticlePath:
             The planes normal vector.
         plane_point: 3d numpy array
             Any point on the plane.
+        
+        Returns
+        -------
+        float
+            The intersection time.
+        None
+            In case there is no intersection
         """
         # plane specified via one point p and a normal vector n
         # solve the equation (r(t) - p) * n = 0 for t.
