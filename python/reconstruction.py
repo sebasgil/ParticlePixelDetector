@@ -26,6 +26,6 @@ class Reconstructor:
 
         Parameters
         ----------
-        # TODO: wording
-        event: The event whose original path is to be reconstructed.
+        event:
+            The event whose original path is to be reconstructed.
         """

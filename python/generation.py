@@ -13,8 +13,8 @@ class ParticlePath:
         """
         Create an instance of ParticlePath.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         origin: 3d numpy array
             The Starting point of the particles path.
         velocity: 3d numpy array
@@ -47,7 +47,7 @@ class ParticlePath:
         Return None if there is no intersection or the intersection time is
         too big.
 
-        Paramters:
+        Parameters
         ----------
         plane_normal: 3d numpy array
             The planes normal vector.
@@ -136,8 +136,8 @@ class UniformSphereGenerator:
         """
         Create an instance of UniformSphereGenerator.
 
-        Paramters:
-        ----------
+        Parameters
+        ---------
         seed: int
             Seed for the internal random generator.
         """
@@ -178,8 +178,8 @@ class UniformSolidAngleGenerator:
         """
         Create an instance of UniformSolidAngleGenerator.
 
-        Paramters:
-        ----------
+        Parameters
+        ---------
         seed: float
             Seed for the internal random generator.
         direction: 3d numpy array
