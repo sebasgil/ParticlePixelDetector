@@ -29,8 +29,12 @@ author = 'CSD Group B'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-        'sphinx.ext.autodoc'
+        'sphinx.ext.autodoc',  # create documentation from docstrings
+        'sphinx.ext.napoleon'  # support for numpy docstring format
 ]
+
+# document both class and __init__ docstring
+autoclass_content = 'both'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
