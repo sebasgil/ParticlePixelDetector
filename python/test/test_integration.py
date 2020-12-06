@@ -6,6 +6,7 @@ import common
 import simulation
 import reconstruction
 
+
 # For now this just serves as an example of how the library is
 # intended to be used.
 def test_implementated():
@@ -24,12 +25,12 @@ def test_implementated():
     reconstructor = reconstruction.Reconstructor(geometry)
 
     # generate a single event
-    event = event_generator.get_random_event() # pylint: disable=assignment-from-no-return
+    event = event_generator.get_random_event()  # pylint: disable=assignment-from-no-return
     # reconstruct the originial path
-    path = reconstructor.reconstruct_from_event(event) # pylint: disable=assignment-from-no-return
+    path = reconstructor.reconstruct_from_event(event)  # pylint: disable=assignment-from-no-return
 
     # Check if the the event and path are not None If they are non,
     # that means the functions that generated them have not yet been
     # implemented and the test fails.
-    assert event is not  None
+    assert event is not None
     assert path is not None

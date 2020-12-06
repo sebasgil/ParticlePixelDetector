@@ -4,6 +4,7 @@ Simulation of events.
 
 from common import Event, DetectorGeometry
 
+
 class EventGenerator:
     """
     Randomly generates events.
