@@ -1,3 +1,0 @@
-# ParticlePixelDetector
-
-Group Assignment
