@@ -1,8 +1,11 @@
-"""Common classes for use in most modules."""
-import numpy
-from typing import List
+"""Common classes for use in most module."""
 
+from typing import List
+import numpy
+
+# type alias for event ids
 EventId = int
+
 
 # TODO: employ singleton pattern
 class EventIdGenerator:
@@ -27,6 +30,7 @@ class EventIdGenerator:
         self.__counter += 1
         return new_id
 
+
 class Event:
     """
     A detector event.
@@ -37,10 +41,10 @@ class Event:
 
     def __init__(self):
         """Create a new Event."""
-        pass
 
     def get_id(self) -> EventId:
         """Return the events unique id."""
+
 
 class DetectorGeometry:
     """
@@ -49,20 +53,29 @@ class DetectorGeometry:
     This includes the positioning and orientation of all pixels.
     """
 
+    # everything is hardcoded for now
     def __init__(self):
         """Create a detector geometry object."""
-        self.source_position = numpy.array([0,0,0])
-        self.source_direction = numpy.array([0,0,1])
+        self.source_position = numpy.array([0, 0, 0])
+        self.source_direction = numpy.array([0, 0, 1])
         # 10°
         self.source_opening_angle = 10 / 180 * numpy.pi
         panes = []
         for i in range(5):
-            z = 0.3 + i*0.05
+            z = 0.3 + i*0.05  # pylint: disable=invalid-name
             panes.append(Pane(i, z))
         self.panes = panes
 
+
 class Pane:
-    """A panel, pane, layer."""
+    """A single panel / pane of pixels.
+
+    Warning
+    -------
+    The implementation of this class heavily relies on the panes being oriented
+    parallel to the xy axis and having their center lie on the z axis of the
+    detector coordinate system.
+    """
 
     def __init__(
         self, uid: int, z_offset: float,
@@ -95,15 +108,28 @@ class Pane:
         self.center = numpy.array([0, 0, self.z_offset])
 
     def pixels(self):
-        """Return all pixels of this pane."""
+        """Return all pixels of this pane.
+
+        Warning
+        -------
+        This method is very computationally intensive. Use
+        `Pane.pixel_positions` instead.
+
+        Returns
+        -------
+        List[Pixel]
+            The list of pixels.
+        """
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
         lower_left_corner = (
             self.center - numpy.array([self.width/2, self.height/2, 0])
         )
+
         def pixel_center(n: int, m: int):
+            # pylint: disable=invalid-name
             return (
-                lower_left_corner + 
+                lower_left_corner +
                 numpy.array([pixel_width/2, pixel_height/2, 0]) +
                 numpy.array([n*pixel_width, m*pixel_height, 0])
             )
@@ -111,12 +137,13 @@ class Pane:
         result = []
         for j in range(self.n_pixels_y):
             for i in range(self.n_pixels_x):
-                pixel = Pixel(pixel_center(i,j), self.uid)
+                pixel = Pixel(pixel_center(i, j), self.uid)
                 result.append(pixel)
         return result
 
     def pixel_positions(self):
-        """Return a numpy array with all pixel position"""
+        # pylint: disable=invalid-name
+        """Return a numpy array with all pixel position."""
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
         lower_left_corner = (
@@ -126,16 +153,16 @@ class Pane:
         # [0, 1, 2, ... 1999]
         single_row_ns = numpy.arange(self.n_pixels_x)
         # [0, 1, ... 1999, 0, 1, ... 1999 ..... 0, 1, ... 1999]
-        #          ------- n_pixels_y times ----- 
+        #          ------- n_pixels_y times -----
         ns = numpy.repeat(single_row_ns, self.n_pixels_y)
 
-        # [0, 0, 0 ... 0, 1, 1, 1, ... 1, ....     ......  1999, 1999, 1999, ... 1999]
-        ms = numpy.concatenate([numpy.full((self.n_pixels_y,), n) for n in range(self.n_pixels_x)])
+        # [0, 0, 0 ... 0, 1, 1, 1, ... 1, ........  1999, 1999, 1999, ... 1999]
+        ms = numpy.concatenate(
+            [numpy.full((self.n_pixels_y,), n) for n in range(self.n_pixels_x)]
+        )
 
-        xs = ns * pixel_width       
-
+        xs = ns * pixel_width
         ys = ms * pixel_width
-
         zs = numpy.zeros(self.n_pixels_x * self.n_pixels_y)
 
         # [xs
@@ -150,15 +177,27 @@ class Pane:
         # ]
         offset_vectors = numpy.array([xs, ys, zs]).T
 
-        return lower_left_corner + numpy.array([pixel_width/2, pixel_height/2, 0]) + offset_vectors
+        return (
+            lower_left_corner +
+            numpy.array([pixel_width/2, pixel_height/2, 0]) +
+            offset_vectors
+        )
 
     def get_pixel_from_position(self, position):
-        """Return the pixel at the given position, if there is one"""       
+        """Return the pixel at the given position, if there is one.
+
+        Parameters
+        ----------
+        position: 3d numpy array
+            The position whose pixel to return.
+        """
         # verify the positions actually corresponds to a pixel
         if position in self.pixel_positions():
             return Pixel(position, self.uid)
-        else:
-            raise ValueError("There is no pixel with given position {}".format(position))
+
+        raise ValueError(
+            "There is no pixel with given position {}".format(position)
+        )
 
 
 class Pixel:
@@ -166,9 +205,10 @@ class Pixel:
 
     def __init__(self, position, pane_id: int):
         """Create a new pixel.
+
         Parameters
         ----------
-        position : numpy 3d array 
+        position : numpy 3d array
             position of the pixel.
         pane_id: int
             an id which refers to the pane in which the pixel lies (Pane.uid).
