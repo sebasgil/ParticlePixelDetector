@@ -1,6 +1,7 @@
 """
 Common classes for use in most modules.
 """
+import numpy
 
 EventId = int
 
@@ -49,4 +50,4 @@ class DetectorGeometry:
     This includes the positioning and orientation of all pixels.
     """
     def __init__(self):
-        pass
+        self.source_position = numpy.array([0,0,0])
