@@ -60,7 +60,7 @@ class DetectorGeometry:
             z = 0.3 + i*0.05
             panes.append(Pane(i, z))
         self.panes = panes
-        
+
 class Pane:
     """A panel, pane, layer."""
 
@@ -93,7 +93,7 @@ class Pane:
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
         self.center = numpy.array([0, 0, self.z_offset])
-        
+
     def pixels(self):
         """Return all pixels of this pane."""
         pixel_width = self.width / self.n_pixels_x
@@ -107,17 +107,17 @@ class Pane:
                 numpy.array([pixel_width/2, pixel_height/2, 0]) +
                 numpy.array([n*pixel_width, m*pixel_height, 0])
             )
-        
+
         result = []
         for j in range(self.n_pixels_y):
             for i in range(self.n_pixels_x):
                 pixel = Pixel(pixel_center(i,j), self.uid)
                 result.append(pixel)
         return result
-        
+
 class Pixel:
     """A Pixel belonging to the n_th pane."""
-   
+
     def __init__(self, position, pane_id: int):
         """Create a new pixel.
         Parameters
@@ -129,6 +129,3 @@ class Pixel:
         """
         self.pane_id = pane_id
         self.position = position
-        
-        
-        
