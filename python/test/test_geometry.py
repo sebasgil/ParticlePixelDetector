@@ -19,3 +19,26 @@ def test_source():
     assert g.source_direction.shape == (3,)
     assert numpy.linalg.norm(g.source_direction) == 1
     assert isinstance(g.source_opening_angle, float)
+
+def test_pane():
+    """
+    Test properties of the detector panes.
+    """
+    p = common.Pane(0, 0.3)
+    is_int(p.uid)
+    is_float(p.width)
+    is_float(p.height)
+    is_float(p.z_offset)
+    is_int(p.n_pixels_x)
+    is_int(p.n_pixels_y)
+    is3d(p.center)
+
+def is_float(f):
+    assert isinstance(f, float)
+    
+def is_int(f):
+    assert isinstance(f, int)
+
+def is3d(a):
+    assert isinstance(a, numpy.ndarray)
+    assert a.shape == (3,)
