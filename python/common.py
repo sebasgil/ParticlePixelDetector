@@ -1,6 +1,4 @@
-"""
-Common classes for use in most modules.
-"""
+"""Common classes for use in most modules."""
 import numpy
 
 EventId = int
@@ -14,13 +12,13 @@ class EventIdGenerator:
     identifiers might be used for example in saving events to external
     storage (e.g. a file, a database).
     """
+
     def __init__(self):
+        """Create a new EventId Generator."""
         self.__counter = 0
 
     def new_id(self) -> EventId:
-        """
-        Returns a new unique id.
-        """
+        """Return a new unique id."""
         # save old counter state, to be returned
         # this ensures the ids start at 0
         new_id = self.__counter
@@ -35,13 +33,13 @@ class Event:
     An event is the result of a single particle passing through the
     detector. It contains all of the detectors measurements.
     """
+
     def __init__(self):
+        """Create a new Event."""
         pass
 
     def get_id(self) -> EventId:
-        """
-        Returns the events unique id.
-        """
+        """Return the events unique id."""
 
 class DetectorGeometry:
     """
@@ -49,21 +47,39 @@ class DetectorGeometry:
 
     This includes the positioning and orientation of all pixels.
     """
+
     def __init__(self):
+        """Create a detector geometry object."""
         self.source_position = numpy.array([0,0,0])
         self.source_direction = numpy.array([0,0,1])
         # 10°
         self.source_opening_angle = 10 / 180 * numpy.pi
 
 class Pane:
-    """
-    A panel, pane, layer
-    """
+    """A panel, pane, layer."""
+
     def __init__(
         self, uid: int, z_offset: float,
         width: float = 0.2, height: float = 0.2,
         n_pixels_x: int = 2000, n_pixels_y: int = 2000
     ):
+        """Create a new pane.
+
+        Parameters
+        ----------
+        uid: int
+            A unique id used to refer to this pane.
+        z_offset: float
+            The panes z-intercept.
+        width: flaot
+            The panes width (in the x direction).
+        height: float
+            The panes height (in the y direction).
+        n_pixels_x: int
+            The number of (equally spaced) pixels in the x direction.
+        n_piyels_x: int
+            The number of (equally spaced) piyels in the y direction.
+        """
         self.uid = uid
         self.width = width
         self.height = height

@@ -35,7 +35,7 @@ def test_pane():
 
 def is_float(f):
     assert isinstance(f, float)
-    
+
 def is_int(f):
     assert isinstance(f, int)
 
