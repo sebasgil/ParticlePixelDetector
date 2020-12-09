@@ -87,3 +87,21 @@ class Pane:
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
         self.center = numpy.array([0, 0, self.z_offset])
+
+class Pixel:
+    """A Pixel belonging to the n_th pane."""
+   
+    def __init__(self, position, pane_id: int):
+        """Create a new pixel.
+        Parameters
+        ----------
+        position : numpy 3d array 
+            position of the pixel.
+        pane_id: int
+            an id which refers to the pane in which the pixel lies (Pane.uid).
+        """
+        self.pane_id = pane_id
+        self.position = position
+        
+        
+        
