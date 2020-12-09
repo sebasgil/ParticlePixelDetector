@@ -43,7 +43,7 @@ def test_pixel():
     is_int(p.pane_id)
 
 def test_pixel_list():
-    """"""
+    """Test the pixels function on Pane."""
     p = common.Pane(0, 0.3, n_pixels_x = 20, n_pixels_y = 20)
     pixels = p.pixels()
     assert isinstance(pixels, list)
