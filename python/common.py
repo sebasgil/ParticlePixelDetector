@@ -51,3 +51,6 @@ class DetectorGeometry:
     """
     def __init__(self):
         self.source_position = numpy.array([0,0,0])
+        self.source_direction = numpy.array([0,0,1])
+        # 10°
+        self.source_opening_angle = 10 / 180 * numpy.pi
