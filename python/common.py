@@ -1,7 +1,7 @@
 """Common classes for use in most module."""
 
 from typing import List
-import numpy
+import numpy # type: ignore
 
 # type alias for event ids
 EventId = int

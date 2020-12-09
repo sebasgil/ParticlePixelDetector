@@ -1,6 +1,6 @@
 # pylint: disable=invalid-name
 """Testing for the geometry class."""
-import numpy
+import numpy # type: ignore
 import common
 
 
