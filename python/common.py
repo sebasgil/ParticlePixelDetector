@@ -115,6 +115,52 @@ class Pane:
                 result.append(pixel)
         return result
 
+    def pixel_positions(self):
+        """Return a numpy array with all pixel position"""
+        pixel_width = self.width / self.n_pixels_x
+        pixel_height = self.height / self.n_pixels_y
+        lower_left_corner = (
+            self.center - numpy.array([self.width/2, self.height/2, 0])
+        )
+
+        # [0, 1, 2, ... 1999]
+        single_row_ns = numpy.arange(self.n_pixels_x)
+        # [0, 1, ... 1999, 0, 1, ... 1999 ..... 0, 1, ... 1999]
+        #          ------- n_pixels_y times ----- 
+        ns = numpy.repeat(single_row_ns, self.n_pixels_y)
+
+        # [0, 0, 0 ... 0, 1, 1, 1, ... 1, ....     ......  1999, 1999, 1999, ... 1999]
+        ms = numpy.concatenate([numpy.full((self.n_pixels_y,), n) for n in range(self.n_pixels_x)])
+
+        xs = ns * pixel_width       
+
+        ys = ms * pixel_width
+
+        zs = numpy.zeros(self.n_pixels_x * self.n_pixels_y)
+
+        # [xs
+        # ,ys
+        # ,zs
+        # ]
+
+        # [[0, 0, 0],
+        #  [1, 0, 0],
+        #  [2, 0, 0]
+        #  ... ...
+        # ]
+        offset_vectors = numpy.array([xs, ys, zs]).T
+
+        return lower_left_corner + numpy.array([pixel_width/2, pixel_height/2, 0]) + offset_vectors
+
+    def get_pixel_from_position(self, position):
+        """Return the pixel at the given position, if there is one"""       
+        # verify the positions actually corresponds to a pixel
+        if position in self.pixel_positions():
+            return Pixel(position, self.uid)
+        else:
+            raise ValueError("There is no pixel with given position {}".format(position))
+
+
 class Pixel:
     """A Pixel belonging to the n_th pane."""
 

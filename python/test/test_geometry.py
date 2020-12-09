@@ -49,6 +49,13 @@ def test_pixel_list():
     assert isinstance(pixels, list)
     assert isinstance(pixels[0], common.Pixel)
 
+def test_pixel_array():
+    """Test the pixel_positions function on Pane."""
+    p = common.Pane(0, 0.3)
+    pixel_positions = p.pixel_positions()
+    assert isinstance(pixel_positions, numpy.ndarray)
+    assert pixel_positions.shape == (4_000_000, 3)
+
 def is_float(f):
     assert isinstance(f, float)
 
