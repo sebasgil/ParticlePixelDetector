@@ -71,7 +71,7 @@ class Pane:
             A unique id used to refer to this pane.
         z_offset: float
             The panes z-intercept.
-        width: flaot
+        width: float
             The panes width (in the x direction).
         height: float
             The panes height (in the y direction).
