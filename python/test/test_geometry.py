@@ -33,6 +33,18 @@ def test_pane():
     is_int(p.n_pixels_y)
     is3d(p.center)
 
+def test_pixel():
+    """Test properties of the pixel."""
+    p = common.Pixel(numpy.array([5, 1, 8.3]), 0)
+    is3d(p.position)
+    is_int(p.pane_id)
+
+def test_pixel_list():
+    """"""
+    p = common.Pane(0, 0.3)
+    pixels = p.pixels()
+    assert isinstance(pixels, List[common.Pixel])
+
 def is_float(f):
     assert isinstance(f, float)
 
