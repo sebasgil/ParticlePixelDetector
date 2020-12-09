@@ -55,7 +55,12 @@ class DetectorGeometry:
         self.source_direction = numpy.array([0,0,1])
         # 10°
         self.source_opening_angle = 10 / 180 * numpy.pi
-
+        panes = []
+        for i in range(5):
+            z = 0.3 + i*0.05
+            panes.append(Pane(i, z))
+        self.panes = panes
+        
 class Pane:
     """A panel, pane, layer."""
 

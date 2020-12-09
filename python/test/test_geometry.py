@@ -6,7 +6,7 @@ import numpy
 # NOTE: the method name needs to start with "test" to be recognized
 # by the unittest test runner. unittest is from the python standard
 # library
-def test_source():
+def test_geometry():
     """
     Test properties of the particle source
     """
@@ -19,7 +19,10 @@ def test_source():
     assert g.source_direction.shape == (3,)
     assert numpy.linalg.norm(g.source_direction) == 1
     assert isinstance(g.source_opening_angle, float)
-
+    assert isinstance(g.panes, list)
+    for pane in g.panes:
+        assert isinstance(pane, common.Pane)
+   
 def test_pane():
     """
     Test properties of the detector panes.
@@ -41,7 +44,7 @@ def test_pixel():
 
 def test_pixel_list():
     """"""
-    p = common.Pane(0, 0.3)
+    p = common.Pane(0, 0.3, n_pixels_x = 20, n_pixels_y = 20)
     pixels = p.pixels()
     assert isinstance(pixels, list)
     assert isinstance(pixels[0], common.Pixel)
