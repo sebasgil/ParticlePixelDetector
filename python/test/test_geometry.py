@@ -43,7 +43,8 @@ def test_pixel_list():
     """"""
     p = common.Pane(0, 0.3)
     pixels = p.pixels()
-    assert isinstance(pixels, List[common.Pixel])
+    assert isinstance(pixels, list)
+    assert isinstance(pixels[0], common.Pixel)
 
 def is_float(f):
     assert isinstance(f, float)

@@ -1,5 +1,6 @@
 """Common classes for use in most modules."""
 import numpy
+from typing import List
 
 EventId = int
 
@@ -87,7 +88,28 @@ class Pane:
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
         self.center = numpy.array([0, 0, self.z_offset])
-
+        
+    def pixels(self):
+        """Return all pixels of this pane."""
+        pixel_width = self.width / self.n_pixels_x
+        pixel_height = self.height / self.n_pixels_y
+        lower_left_corner = (
+            self.center - numpy.array([self.width/2, self.height/2, 0])
+        )
+        def pixel_center(n: int, m: int):
+            return (
+                lower_left_corner + 
+                numpy.array([pixel_width/2, pixel_height/2, 0]) +
+                numpy.array([n*pixel_width, m*pixel_height, 0])
+            )
+        
+        result = []
+        for j in range(self.n_pixels_y):
+            for i in range(self.n_pixels_x):
+                pixel = Pixel(pixel_center(i,j), self.uid)
+                result.append(pixel)
+        return result
+        
 class Pixel:
     """A Pixel belonging to the n_th pane."""
    
