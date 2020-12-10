@@ -29,8 +29,9 @@ author = 'CSD Group B'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-        'sphinx.ext.autodoc',  # create documentation from docstrings
-        'sphinx.ext.napoleon'  # support for numpy docstring format
+        'sphinx.ext.autodoc',   # create documentation from docstrings
+        'sphinx.ext.napoleon',  # support for numpy docstring format
+        'sphinx.ext.viewcode'   # show source code in documentation
 ]
 
 # document both class and __init__ docstring
@@ -53,7 +54,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+html_theme = 'sphinxdoc'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
