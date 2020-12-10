@@ -143,7 +143,21 @@ class Pane:
 
     def pixel_positions(self):
         # pylint: disable=invalid-name
-        """Return a numpy array with all pixel position."""
+        """Return a numpy array with all pixel position.
+
+        >>> p = Pane(0, 0, n_pixels_x=5, n_pixels_y=4)
+        >>> p.pixel_positions()[0].shape
+        (3,)
+        >>> p.pixel_positions().shape
+        (20, 3)
+
+        Returns
+        -------
+        numpy array
+            All pixel positions in numpy array of shape
+            (n_pixels_x * n_pixels_y, 3) which means the positions can be
+            accesses by just indexing into this array.
+        """
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
         lower_left_corner = (
