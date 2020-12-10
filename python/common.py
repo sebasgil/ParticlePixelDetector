@@ -18,7 +18,7 @@ class EventIdGenerator:
     """
 
     def __init__(self):
-        """Create a new EventId Generator."""
+        """Create a new `EventId` generator."""
         self.__counter = 0
 
     def new_id(self) -> EventId:
@@ -190,6 +190,16 @@ class Pane:
         ----------
         position: 3d numpy array
             The position whose pixel to return.
+        
+        Raises
+        ------
+        ValueError
+            If there is no pixel at the given postion.
+
+        Returns
+        -------
+        Pixel
+            The pixel at the given position.
         """
         # verify the positions actually corresponds to a pixel
         if position in self.pixel_positions():
@@ -201,7 +211,7 @@ class Pane:
 
 
 class Pixel:
-    """A Pixel belonging to the n_th pane."""
+    """A Pixel belonging to a spcific pane."""
 
     def __init__(self, position, pane_id: int):
         """Create a new pixel.
@@ -209,9 +219,9 @@ class Pixel:
         Parameters
         ----------
         position : numpy 3d array
-            position of the pixel.
+            Position of the pixel.
         pane_id: int
-            an id which refers to the pane in which the pixel lies (Pane.uid).
+            The uid of the pane, which this pixel is a part of.
         """
         self.pane_id = pane_id
         self.position = position
