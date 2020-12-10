@@ -1,7 +1,7 @@
 """Common classes for use in most module."""
 
 from typing import List
-import numpy # type: ignore
+import numpy  # type: ignore
 
 # type alias for event ids
 EventId = int
@@ -62,7 +62,7 @@ class DetectorGeometry:
         self.source_opening_angle = 10 / 180 * numpy.pi
         panes = []
         for i in range(5):
-            z = 0.3 + i*0.05  # pylint: disable=invalid-name
+            z = 0.3 + i * 0.05  # pylint: disable=invalid-name
             panes.append(Pane(i, z))
         self.panes = panes
 
@@ -129,9 +129,9 @@ class Pane:
         def pixel_center(n: int, m: int):
             # pylint: disable=invalid-name
             return (
-                lower_left_corner +
-                numpy.array([pixel_width/2, pixel_height/2, 0]) +
-                numpy.array([n*pixel_width, m*pixel_height, 0])
+                lower_left_corner
+                + numpy.array([pixel_width / 2, pixel_height / 2, 0])
+                + numpy.array([n * pixel_width, m * pixel_height, 0])
             )
 
         result = []
@@ -192,9 +192,9 @@ class Pane:
         offset_vectors = numpy.array([xs, ys, zs]).T
 
         return (
-            lower_left_corner +
-            numpy.array([pixel_width/2, pixel_height/2, 0]) +
-            offset_vectors
+            lower_left_corner
+            + numpy.array([pixel_width/2, pixel_height/2, 0])
+            + offset_vectors
         )
 
     def get_pixel_from_position(self, position):
@@ -204,7 +204,7 @@ class Pane:
         ----------
         position: 3d numpy array
             The position whose pixel to return.
-        
+
         Raises
         ------
         ValueError
