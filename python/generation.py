@@ -12,7 +12,7 @@ class ParticlePath:
 
         Parameters
         ----------
-	orientation: 2-tuple
+	orientation: 3-tuple
 		The initial orientation of the particle drawn
         velocity: 3-tuple
         	The initial velocity of the particle stored as a vector
@@ -22,7 +22,7 @@ class ParticlePath:
         	the number of time-steps in a particle trajectory
         """
         
-        self._orientation = orientation
+        self._orientation = GetOrientation.get_solid_angle()
         self._velocity = velocity
 	self._samples = samples
 
@@ -41,18 +41,14 @@ class ParticlePath:
         """
         # initialize array of the correct shape and number of time steps
         self._coordinates = np.zeroes([samples,3])
-        # iterate finite difference mesh
         for time_step in np.arange(samples):
-        	
-        # forgot how to do this
+            self._coordinates[time_step + 1] = self._coordinates[time_step] + np.array(self._velocity)
+            # TO-DO: test that this works, especially for final time-step
         
         return self._coordinates
         
-class GetRandomOrientation:
+class GetOrientation:
 	"""Create a random orientation to initialize a particle path"""
-
-
-	opening_angle = 10.0 # fixed degree value specified for project 
 
 
     def __init__(self, seed: int):
@@ -63,41 +59,37 @@ class GetRandomOrientation:
         ---------
         seed: int
             Seed for the internal random generator.
+        opening angle: float
+            The fixed value for the source specified for the project
+        direction:  3-tuple
+            The direction along which the source points.
+            Held constant at the positive z-axis line of sight.
+            TO-DO: Should this be subsumed under Geometry?
         """
         # store for debug purposes
         self._seed = seed
         # initialize random generator
         self._rng = numpy.random.default_rng(self._seed)
+        self._opening_angle = 10.0
+        self._direction = (0.,0.,1.0)
         
         
-    def get_sphere_point(self):
-        """Return a random point on the surface of the unit sphere.
-        This is a necessary intermediate step to draw a random solid angle."""
-        while True:
-            # generate random point in the bounding box of the unit sphere
-            cube_point = self._rng.uniform(low=-1.0, high=1.0, size=3)
-            # check if point lies in the unit sphere
-            if numpy.linalg.norm(point_in_cube) < 1:
-                # project onto sphere surface i.e. normalize
-                sphere_point = (
-                )
-                return sphere_point
-            # try again
-            
-    def get_solid_angle(sphere_point):
-    		# fill in
-    		return orientation
+    def get_random_sphere_vector():
+        '''Draw a random vector form the spherically symmetric 3D
+	normal distribution and normalize to unit length'''
+	vector = np.random.normal(size=3)
+	normalized_vector = vector / np.linalg.norm(vector)
+	return normalized_vector
 
-#1. orient unit sphere so it's aligned with optical axis
-#2. define area of spherical cap subtended by opening angle
-#	area = (2*pi*r**2)*(1 - cos(theta))
-#	     = 2*pi*(1-cos(opening_angle)) 
-#3. draw uniformly distributed random variables u and v from (0,1)
-#4. compute
-#	theta = 2*pi*u
-#	phi = arccos(2*v - 1)
-#5. check whether drawn angles are inside spherical cap
-#	?
-    
+    def get_solid_angle(direction, opening_angle):
+	 '''Generate a random sphere vector and check whether its orientation
+	 aligns with that of the opening angle.'''
+	 opening_angle  = 10.0
+	 direction = np.array([0.,0.,1.0])
+	     while True:
+		solid_angle = get_random_sphere_vector()
+		if solid_angle.dot(self._direction) < np.cos(self._opening_angle): # note that the second is -0.83; is this a problem?
+		    return random_unit_vector
+
     
 
