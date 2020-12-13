@@ -43,7 +43,7 @@ class ParticlePath:
         self._coordinates = np.zeroes([samples,3])
         for time_step in np.arange(samples):
             self._coordinates[time_step + 1] = self._coordinates[time_step] + np.array(self._velocity)
-            # TO-DO: test that this works, especially for final time-step
+            # TO-DO: test that this works, especially for final time-steps
         
         return self._coordinates
         
@@ -65,7 +65,7 @@ class GetOrientation:
             The direction along which the source points.
             Held constant at the positive z-axis line of sight.
             TO-DO: Should this be subsumed under Geometry?
-        """
+        """s
         # store for debug purposes
         self._seed = seed
         # initialize random generator
