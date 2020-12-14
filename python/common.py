@@ -54,7 +54,7 @@ class DetectorGeometry:
     """
 
     # everything is hardcoded for now
-    def __init__(self):
+    def __init__(self, n_pixels=2000):
         """Create a detector geometry object."""
         self.source_position = numpy.array([0, 0, 0])
         self.source_direction = numpy.array([0, 0, 1])
@@ -63,7 +63,7 @@ class DetectorGeometry:
         panes = []
         for i in range(5):
             z = 0.3 + i * 0.05  # pylint: disable=invalid-name
-            panes.append(Pane(i, z))
+            panes.append(Pane(i, z, n_pixels_x=n_pixels, n_pixels_y=n_pixels))
         self.panes = panes
 
 
