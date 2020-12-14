@@ -18,16 +18,18 @@ path = reconstructor.reconstruct_from_event(event)
 ```
 
 ## Documentation
-Documentation can be automatically built from docstrings using `sphinx`, see it's [website](https://www.sphinx-doc.org/en/master/) for more information.
+Documentation can be built using `sphinx`, see it's [website](https://www.sphinx-doc.org/en/master/) for more information.
 
-Install the `sphinx` package (e.g. using pip) and run
+**Automatic rendering of docstrings** is done using the `sphinx.ext.napoleon` extension, see the [napoleon documentation](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html) for information on how to write docstrings.
+
+Docstrings should be formatted in [numpy style](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html) (alternativley [google style](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)) in order for them to be correctly rendered.
+
+To build the documentation install the `sphinx` package (e.g. using pip) and run
 ```
 cd docs
 make html
 ```
-in your shell to build the documentation.
-
-The documentation can be found in `docs/_build/html/index.html`.
+the rendered documentation can then be found in `docs/_build/html/index.html`.
 
 ## Testing
 You need `pytest` installed in order to run the tests, see [pytest documentation](https://docs.pytest.org/en/stable/) for instructions.
