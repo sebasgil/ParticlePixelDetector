@@ -1,5 +1,13 @@
 """Common classes for use in most module."""
 
+# python version > 3.7 is required for this import to work
+# it enables postponed evalutation of type annotations
+# which is needed for the `-> Pixel` type annotations since
+# the Pixel class is defined only at the bottom of the file.
+# -> see PEP 563
+# It will be standard in upcoming python 3.10
+from __future__ import annotations
+
 from typing import List
 import numpy  # type: ignore
 
@@ -107,7 +115,7 @@ class Pane:
         self.n_pixels_y = n_pixels_y
         self.center = numpy.array([0, 0, self.z_offset])
 
-    def pixels(self):
+    def pixels(self) -> List[Pixel]:
         """Return all pixels of this pane.
 
         Warning
@@ -197,7 +205,7 @@ class Pane:
             + offset_vectors
         )
 
-    def get_pixel_from_position(self, position):
+    def get_pixel_from_position(self, position) -> Pixel:
         """Return the pixel at the given position, if there is one.
 
         Parameters
