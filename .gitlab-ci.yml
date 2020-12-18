@@ -4,8 +4,8 @@ default:
     - conda install -c anaconda pytest
   
 stages:
-  - tests
+  - test
 
 tests:
-  stage: tests
+  stage: test
   script: "python3 -m pytest --doctest-modules ./python"
