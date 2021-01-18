@@ -5,9 +5,12 @@ Test all components working together.
 import common
 import simulation
 import reconstruction
+import pytest
+
 
 # For now this just serves as an example of how the library is
 # intended to be used.
+@pytest.mark.xfail  # expect this test to fail
 def test_implementated():
     """
     An example of how the program is to be used.

@@ -1,0 +1,11 @@
+default:
+  image: continuumio/anaconda3:2020.11
+  before_script:
+    - conda install -c anaconda pytest
+  
+stages:
+  - test
+
+tests:
+  stage: test
+  script: "python3 -m pytest --doctest-modules ./python"
