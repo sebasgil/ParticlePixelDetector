@@ -55,14 +55,17 @@ def find_direction():
         for k in range(3):  #finding the dot product
             dot  += direction[k]*point_vec[k]
         
-        #print(dot) dot product working fine
+        print("dot product: ", dot)
 
         for n in range(3):  #adding contribuition of the ith point to next direction
             next_direction[n] += dot*point_vec[n]
     
     
          
+    print("norm before calculation: ", norm)
+    print("next direction: ", next_direction)
     for m in range(3):  #finding norm of next_direction
+        print("adding: ", (next_direction[m])*(next_direction[m]))
         norm += (next_direction[m])*(next_direction[m])
 
     norm = norm**(0.5)
@@ -70,6 +73,7 @@ def find_direction():
     
     
     for q in range(3):  #normalizing next direction 
+        print("normalizing with norm: ", norm)
         next_direction[q] = next_direction[q]/norm
     
     for a in range(3): #updating direction
@@ -81,9 +85,9 @@ def find_direction():
     
 
 
-
-find_centroid()
-find_direction()
+if __name__ == "__main__":
+    find_centroid()
+    find_direction()
 
 
 
