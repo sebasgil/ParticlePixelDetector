@@ -5,7 +5,7 @@ Simulation of events.
 import numpy as np
 from scipy.spatial.distance import cdist  # package to calculate the euclidean distance
 
-from common import EventGenerator, EventIdGenerator, DetectorGeometry, Pixel
+from common import EventManager, DetectorGeometry, Pixel
 from generation import PathGenerator
 
 class EventGenerator:
@@ -42,19 +42,19 @@ class EventGenerator:
             intersection_time = time_path[intersection_idxs[1]]
 
             triggered_pixel = pane.get_pixel_from_position(pane_intersection_point)
-            if self.check_if_intersection_valid(pane_intersection_point, triggered_pixel):
-
+            heuristic_max_pixel_radius = pane.heuristic_max_pixel_radius
+            if self.check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
                 event = self.event_generator.generate_event(intersection_time, triggered_pixel)
                 events.append(event)
 
         return events
 
 
-    def check_if_intersection_valid(self, pane_intersection_point, pixel: Pixel):
-        """
-        Forgot how we were going to do it
-        """
-        return True
+    def check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
+        dist = np.linalg.norm(path_intersection_point, pixel.position)
+        if dist <= max_radius:
+            return True
+        return False
 
     def search_for_intersections(self, detector_pane, random_path):
         """Calculates the euclidean distance for each point of the particle path and returns the indicies
