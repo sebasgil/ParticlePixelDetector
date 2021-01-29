@@ -123,7 +123,7 @@ class Pane:
         self.n_pixels_y = n_pixels_y
         self.center = numpy.array([0, 0, self.z_offset])
         ## WARNING: Assumes cube pixels !!
-        self.heuristic_max_pixel_radius = numpy.sqrt(3) * (width / n_pixels_x)
+        self.heuristic_max_pixel_radius = numpy.sqrt(3) * (width / n_pixels_x) / 2
 
     def pixels(self) -> List[Pixel]:
         """Return all pixels of this pane.
