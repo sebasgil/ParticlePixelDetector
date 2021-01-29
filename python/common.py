@@ -87,8 +87,8 @@ class Pane:
 
     def __init__(
         self, uid: int, z_offset: float, width: float = 0.2, height: float = 0.2,
-        n_pixels_x: int = 2000, n_pixels_y: int = 2000, z_error: float = 0, 
-        x_error: float = 0, y_error: float = 0, 
+        n_pixels_x: int = 2000, n_pixels_y: int = 2000, 
+        z_error: float = 0, x_error: float = 0, y_error: float = 0, 
     ):
         """Create a new pane.
 
