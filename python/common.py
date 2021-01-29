@@ -86,8 +86,8 @@ class Pane:
     """
 
     def __init__(
-        self, uid: int, z_offset: float,
-        width: float = 0.2, height: float = 0.2,
+        self, uid: int, z_offset: float, z_error: float, x_error: float, 
+        y_error: float, width: float = 0.2, height: float = 0.2,
         n_pixels_x: int = 2000, n_pixels_y: int = 2000
     ):
         """Create a new pane.
@@ -105,7 +105,7 @@ class Pane:
         n_pixels_x: int
             The number of (equally spaced) pixels in the x direction.
         n_piyels_x: int
-            The number of (equally spaced) piyels in the y direction.
+            The number of (equally spaced) pixels in the y direction.
         """
         self.uid = uid
         self.width = width
@@ -113,7 +113,9 @@ class Pane:
         self.z_offset = z_offset
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
+        self.install_error = numpy.array([self.x_error, self.y_error, self.z_error])
         self.center = numpy.array([0, 0, self.z_offset])
+        self.center_new = self.center + self.install_error 
 
     def pixels(self) -> List[Pixel]:
         """Return all pixels of this pane.
