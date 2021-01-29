@@ -39,7 +39,7 @@ class Reconstructor:
 
 
 
-################################################################################################3
+################################################################################################
 
 import numpy as np
 
@@ -54,35 +54,16 @@ import numpy as np
 pixel_info = np.zeros((5,3))
 
 
-#################################################################
-# You can test the program with there points that lie on a line passing 
-# through the origin and (1,1,10) 
-pixel_info[0,0] = 3.0
-pixel_info[0,1] = 3.0
-pixel_info[0,2] = 30.0
-pixel_info[1,0] = 3.5
-pixel_info[1,1] = 3.5
-pixel_info[1,2] = 35.0
-pixel_info[2,0] = 4.0
-pixel_info[2,1] = 4.0
-pixel_info[2,2] = 40.0
-pixel_info[3,0] = 4.5
-pixel_info[3,1] = 4.5
-pixel_info[3,2] = 45.0
-pixel_info[4,0] = 5.0
-pixel_info[4,1] = 5.0
-pixel_info[4,2] = 50.0
 
-###########################################################
 
-def find_centroid(): #returns centroid
+def find_centroid(pixel_info): #returns centroid
     centroid = np.mean(pixel_info, axis=0)
     return centroid
 
 
 
-def find_direction(): #returns direction
-    centroid = find_centroid()
+def find_direction(pixel_info): #returns direction
+    centroid = find_centroid(pixel_info)
     direction = np.array([1.0, 0.0, 0.0])
 
     for j in range(10):
@@ -103,9 +84,9 @@ def find_direction(): #returns direction
     #print(direction)
     return direction
 
-def distance_func(point):
-    centroid = find_centroid()
-    direction = find_direction()
+def distance_func(point, pixel_info):
+    centroid = find_centroid(pixel_info)
+    direction = find_direction(pixel_info)
     vector_to_centroid = centroid - point
     area_of_parallelogram = np.cross(vector_to_centroid, direction)
 
@@ -114,7 +95,7 @@ def distance_func(point):
     return distance
 
 
-def measure():
+def measure(pixel_info):
     sum_distances = 0.0
     for i in range(5):
         sum_distances += distance_func(pixel_info[i])
@@ -124,14 +105,14 @@ def measure():
  
 
 
-print(find_direction())
-print(measure())
+#print(find_direction())
+#print(measure())
 
 
 
 
 
-print("##############################################")
+#print("##############################################")
 
 
 
@@ -159,8 +140,8 @@ pixel_info[4,2] = 50.0
 
 
 
-print(find_direction())
-print(measure())
+#print(find_direction())
+#print(measure())
 
 #################################################################
 # You can test the program with there points that lie on a line passing 
