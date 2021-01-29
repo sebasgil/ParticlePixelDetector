@@ -52,9 +52,7 @@ class EventGenerator:
 
     def check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
         dist = np.linalg.norm(path_intersection_point - pixel.position)
-        if dist <= max_radius:
-            return True
-        return False
+        return dist <= max_radius
 
     def search_for_intersections(self, detector_pane, random_path):
         """Calculates the euclidean distance for each point of the particle path and returns the indicies
