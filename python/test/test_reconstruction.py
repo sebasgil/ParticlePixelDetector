@@ -51,8 +51,16 @@ def test_line():
     a = np.array([3,3,30])
     b = np.array([5,5,50])
 
+    c = np.array([1,1,10]) 
+
     centroid = (a + b)/2
+    direction = (c/(102)**(0.5))
+    point = np.array([2,2,20])
 
     assert (centroid == recon.find_centroid(pixel_info)).all()
+    assert (direction == recon.find_direction(pixel_info)).all()
+    #assert (0.0 == recon.distance_func(point, pixel_info))     needs update
+
+
 
     

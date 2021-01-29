@@ -48,13 +48,7 @@ import numpy as np
 # and convert them into coordinates. This would be the coordinates of the point at 
 # which each pixel would be centered.
 
-
-
-
 pixel_info = np.zeros((5,3))
-
-
-
 
 def find_centroid(pixel_info): #returns centroid
     centroid = np.mean(pixel_info, axis=0)
@@ -84,9 +78,9 @@ def find_direction(pixel_info): #returns direction
     #print(direction)
     return direction
 
-def distance_func(point, pixel_info):
-    centroid = find_centroid(pixel_info)
-    direction = find_direction(pixel_info)
+def distance_func(point, point_on_line, dcs_of_line):
+    centroid = point_on_line #any point on the line
+    direction = dcs_of_line #direction cosines of the line
     vector_to_centroid = centroid - point
     area_of_parallelogram = np.cross(vector_to_centroid, direction)
 
