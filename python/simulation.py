@@ -51,7 +51,7 @@ class EventGenerator:
 
 
     def check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
-        dist = np.linalg.norm(path_intersection_point, pixel.position)
+        dist = np.linalg.norm(path_intersection_point - pixel.position)
         if dist <= max_radius:
             return True
         return False
