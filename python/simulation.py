@@ -23,8 +23,8 @@ class EventGenerator:
     def __init__(self, geometry: DetectorGeometry):
         self.geometry = geometry
         self.panes = self.geometry.panes
-        self.PathGenerator = PathGenerator(geometry)
-        self.EventGenerator = self.common.EventManager()
+        self.path_generator = PathGenerator(geometry)
+        self.event_generator = self.common.EventManager()
 
     def simulate(self):
         """Does the main simulation work. It calculates the intersection points,
@@ -44,7 +44,7 @@ class EventGenerator:
             triggered_pixel = pane.get_pixel_from_position(pane_intersection_point)
             if self.check_if_intersection_valid(pane_intersection_point, triggered_pixel):
 
-                event = self.EventGenerator.generate_event(intersection_time, triggered_pixel)
+                event = self.event_generator.generate_event(intersection_time, triggered_pixel)
                 events.append(event)
 
         return events
@@ -77,5 +77,5 @@ class EventGenerator:
         partical_path: the physical randomly generated path
         time_path: the time sequence for the path
         """
-        particle_path, time_path = self.PathGenerator.generate_random_path()
+        particle_path, time_path = self.path_generator.generate_random_path()
         return particle_path, time_path
