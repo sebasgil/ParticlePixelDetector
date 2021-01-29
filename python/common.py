@@ -113,7 +113,7 @@ class Pane:
         self.z_offset = z_offset
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
-        self.install_error = numpy.array([self.x_error, self.y_error, self.z_error])
+        self.install_error = numpy.array([x_error, y_error, z_error])
         self.center = numpy.array([0, 0, self.z_offset]) + self.install_error 
     
 
