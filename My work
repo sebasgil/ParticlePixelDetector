@@ -1,5 +1,6 @@
 Simpler architecture for ci - already done
 
+To do list:
 Event class- make object oriented
 Gensimple- new requirements from moodle
 common py- line 65 requirement(detector allignment) from moodle
