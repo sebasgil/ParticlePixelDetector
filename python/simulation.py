@@ -24,7 +24,7 @@ class EventGenerator:
         self.geometry = geometry
         self.panes = self.geometry.panes
 
-        self.EventGenerator = self.common.EventGenerator()
+        self.EventGenerator = self.common.EventManager()
 
     def simulate(self):
         """Does the main simulation work. It calculates the intersection points,

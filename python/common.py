@@ -16,7 +16,7 @@ EventId = int
 
 
 # TODO: employ singleton pattern
-class EventGenerator:
+class EventManager:
     """
     Generate event ids.
 
