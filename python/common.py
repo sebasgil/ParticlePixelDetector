@@ -16,7 +16,7 @@ EventId = int
 
 
 # TODO: employ singleton pattern
-class EventIdGenerator:
+class EventGenerator:
     """
     Generate event ids.
 
@@ -38,6 +38,10 @@ class EventIdGenerator:
         self.__counter += 1
         return new_id
 
+    def generate_event(self, time, pixel):
+        self.new_id()
+        return Event(self.__counter, time, pixel)
+
 
 class Event:
     """
@@ -47,11 +51,15 @@ class Event:
     detector. It contains all of the detectors measurements.
     """
 
-    def __init__(self):
+    def __init__(self, id, time, pixel):
         """Create a new Event."""
+        self.id = id
+        self.event_time = time
+        self.triggered_pixel = pixel
 
     def get_id(self) -> EventId:
         """Return the events unique id."""
+        return self.id
 
 
 class DetectorGeometry:
