@@ -23,7 +23,7 @@ class OrientationGenerator:
         self._seed = seed
         # initialize random generator
         self._rng = numpy.random.default_rng(self._seed)
-        self._opening_angle = DetectorGeometry.source_opening_angle
+        self._opening_angle = DetectorGeometry.source_opening_angle * np.pi/ 180
         self._direction = DetectorGeometry.source_direction
         
     def generate_random_sphere_vector():
@@ -38,7 +38,7 @@ class OrientationGenerator:
 	 aligns with that of the opening angle.'''
 	     while True:
 		solid_angle = get_random_sphere_vector()
-		if solid_angle.dot(self._direction) < np.cos(self._opening_angle): # note that the second is -0.83; is this a problem?
+		if solid_angle.dot(self._direction) < np.cos(self._opening_angle):
 		    return random_unit_vector
 
 class PathGenerator:
