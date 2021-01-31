@@ -92,7 +92,7 @@ def distance_func(point, point_on_line, dcs_of_line):
 def measure(pixel_info):
     sum_distances = 0.0
     for i in range(5):
-        sum_distances += distance_func(pixel_info[i])
+        sum_distances += distance_func(pixel_info[i], find_centroid(pixel_info), find_direction(pixel_info))
 
     return sum_distances
 
