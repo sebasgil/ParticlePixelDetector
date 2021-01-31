@@ -37,7 +37,7 @@ def test_pane():
 
 def test_pixel():
     """Test properties of the pixel."""
-    p = common.Pixel(numpy.array([5, 1, 8.3]), 0)
+    p = common.Pixel(numpy.array([5., 1., 8.3]), 0)
     is3d(p.position)
     is_int(p.pane_id)
 
