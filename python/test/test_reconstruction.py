@@ -63,7 +63,7 @@ def test_line():
 
 
 def test_distance_func(): 
-    """tests to determine if distance_func and measure are working """
+    """tests to determine if distance_func and measure are working alright"""
 
     assert 0.5 == recon.distance_func(np.array([0.5, 0.0, 0.0]), np.array([0.0, 1.0, 0.0]), np.array([0.0, 1.0, 0.0]))
     assert 0.0 == recon.distance_func(np.array([2.0, 2.0, 20.0]), np.array([0.0, 0.0, 0.0]), np.array([1.0, 1.0, 10]))
