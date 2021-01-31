@@ -64,10 +64,10 @@ class DetectorGeometry:
     # everything is hardcoded for now
     def __init__(self, n_pixels=2000):
         """Create a detector geometry object."""
-        self.source_position = numpy.array([0, 0, 0])
-        self.source_direction = numpy.array([0, 0, 1])
+        self.source_position = numpy.array([0., 0., 0.])
+        self.source_direction = numpy.array([0., 0., 1.])
         # 10°
-        self.source_opening_angle = 10 / 180 * numpy.pi
+        self.source_opening_angle = 10. / 180. * numpy.pi
         panes = []
         for i in range(5):
             z = 0.3 + i * 0.05  # pylint: disable=invalid-name
@@ -113,7 +113,7 @@ class Pane:
         self.z_offset = z_offset
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
-        self.center = numpy.array([0, 0, self.z_offset])
+        self.center = numpy.array([0., 0., self.z_offset])
 
     def pixels(self) -> List[Pixel]:
         """Return all pixels of this pane.
@@ -131,15 +131,15 @@ class Pane:
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
         lower_left_corner = (
-            self.center - numpy.array([self.width/2, self.height/2, 0])
+            self.center - numpy.array([self.width/2, self.height/2, 0.])
         )
 
         def pixel_center(n: int, m: int):
             # pylint: disable=invalid-name
             return (
                 lower_left_corner
-                + numpy.array([pixel_width / 2, pixel_height / 2, 0])
-                + numpy.array([n * pixel_width, m * pixel_height, 0])
+                + numpy.array([pixel_width / 2, pixel_height / 2, 0.])
+                + numpy.array([n * pixel_width, m * pixel_height, 0.])
             )
 
         result = []
@@ -169,7 +169,7 @@ class Pane:
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
         lower_left_corner = (
-            self.center - numpy.array([self.width/2, self.height/2, 0])
+            self.center - numpy.array([self.width/2, self.height/2, 0.])
         )
 
         # [0, 1, 2, ... 1999]
