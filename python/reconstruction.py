@@ -98,21 +98,6 @@ def measure(pixel_info):
  
 
 
-#print(find_direction())
-#print(measure())
-
-
-
-
-
-#print("##############################################")
-
-
-
-#######################################################################
-#Another test, this time all the points do not lie on a straight line. 4 of the 5
-# are offset by 0.25 in the +ve and -ve x and y directions 
-
 pixel_info[0,0] = 3.25
 pixel_info[0,1] = 3.0
 pixel_info[0,2] = 30.0
@@ -129,66 +114,3 @@ pixel_info[4,0] = 5.0
 pixel_info[4,1] = 5.0
 pixel_info[4,2] = 50.0
 
-
-
-
-
-#print(find_direction())
-#print(measure())
-
-#################################################################
-# You can test the program with there points that lie on a line passing 
-# through the origin and (1,1,10) 
-#pixel_info[0,0] = 3.0
-#pixel_info[0,1] = 3.0
-#pixel_info[0,2] = 30.0
-#pixel_info[1,0] = 3.5
-#pixel_info[1,1] = 3.5
-#pixel_info[1,2] = 35.0
-#pixel_info[2,0] = 4.0
-#pixel_info[2,1] = 4.0
-#pixel_info[2,2] = 40.0
-#pixel_info[3,0] = 4.5
-#pixel_info[3,1] = 4.5
-#pixel_info[3,2] = 45.0
-#pixel_info[4,0] = 5.0
-#pixel_info[4,1] = 5.0
-#pixel_info[4,2] = 50.0
-
-###########################################################
-
-#######################################################################
-#Another test, this time all the points do not lie on a straight line. 4 of the 5
-# are offset by 0.25 in the +ve and -ve x and y directions 
-
-#pixel_info_2 = np.zeros((5,3))
-
-
-#pixel_info_2[0,0] = 3.25
-#pixel_info_2[0,1] = 3.0
-#pixel_info_2[0,2] = 30.0
-#pixel_info_2[1,0] = 3.5
-#pixel_info_2[1,1] = 3.75
-#pixel_info_2[1,2] = 35.0
-#pixel_info_2[2,0] = 3.75
-#pixel_info_2[2,1] = 4.0
-#pixel_info_2[2,2] = 40.0
-#pixel_info_2[3,0] = 4.5
-#pixel_info_2[3,1] = 4.25
-#pixel_info_2[3,2] = 45.0
-#pixel_info_2[4,0] = 5.0
-#pixel_info_2[4,1] = 5.0
-#pixel_info_2[4,2] = 50.0
-
-###########################################################
-
-#def distance_func_2():
-
-#def measure_2():
-#   sum_distances = 0.0
-#    for i in range(5):
-#        sum_distances += distance_func(pixel_info_2[i])
-#
-#    return sum_distances
-
-#print(measure_2())
