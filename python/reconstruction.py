@@ -8,15 +8,18 @@ class ReconstructedPath:
     """
     A single reconstructed path through the Detector.
     """
-    def __init__(self):
-        pass
+    def __init__(self, event_id, direction, centeroid):
+        self.event_id = event_id
+        self.direction = direction
+        self.centeroid = centeroid
+        
 
 class Reconstructor:
     """
     Reconstructs paths from events.
     """
-    def __init__(self, geometry: DetectorGeometry):
-        pass
+    def __init__(self, number_of_iterations):
+        self.number_of_iterations = number_of_iterations
 
     def reconstruct_from_event(self, event: Event) -> ReconstructedPath:
         """
@@ -27,7 +30,9 @@ class Reconstructor:
         # TODO: wording
         event: The event whose original path is to be reconstructed.
         """
+        ReconstructedPath = ReconstructedPath(event.get_id(), find_direction(event.activated_pixel_positions(), self.number_of_iterations), find_centroid(event.activated_pixel_positions()))
 
+        return ReconstructedPath
 
 
 
@@ -56,12 +61,10 @@ def find_centroid(pixel_info): #returns centroid
 
 
 
-def find_direction(pixel_info): #returns direction
+def find_direction(pixel_info, number_of_iterations): #returns direction
     centroid = find_centroid(pixel_info)
-    iteration_number = int
     direction = np.array([1.0, 0.0, 0.0])
-    iteration_number = 1
-    for j in range(10):
+    for j in range(number_of_iterations):
         next_direction = np.array([0.0, 0.0, 0.0])
 
         for point in pixel_info:
@@ -73,8 +76,7 @@ def find_direction(pixel_info): #returns direction
 
         norm = np.dot(next_direction, next_direction)
     
-        direction = (1/(norm**(0.5)))*next_direction
-        iteration_number +=1 
+        direction = (1/(norm**(0.5)))*next_direction 
     return direction
 
 def distance_func(point, point_on_line, dcs_of_line):
@@ -91,26 +93,8 @@ def distance_func(point, point_on_line, dcs_of_line):
 def measure(pixel_info):
     sum_distances = 0.0
     for point in pixel_info:
-        sum_distances += distance_func(point, find_centroid(pixel_info), find_direction(pixel_info))
+        sum_distances += distance_func(point, find_centroid(pixel_info), find_direction(pixel_info, 10))
 
     return sum_distances
 
  
-
-
-pixel_info[0,0] = 3.25
-pixel_info[0,1] = 3.0
-pixel_info[0,2] = 30.0
-pixel_info[1,0] = 3.5
-pixel_info[1,1] = 3.75
-pixel_info[1,2] = 35.0
-pixel_info[2,0] = 3.75
-pixel_info[2,1] = 4.0
-pixel_info[2,2] = 40.0
-pixel_info[3,0] = 4.5
-pixel_info[3,1] = 4.25
-pixel_info[3,2] = 45.0
-pixel_info[4,0] = 5.0
-pixel_info[4,1] = 5.0
-pixel_info[4,2] = 50.0
-

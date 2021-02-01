@@ -41,7 +41,7 @@ def test_line():
     point = np.array([2,2,20])
 
     assert (centroid == recon.find_centroid(pixel_info)).all()
-    assert (direction == recon.find_direction(pixel_info)).all()
+    assert (direction == recon.find_direction(pixel_info, 10)).all()
 
 
 
@@ -71,7 +71,7 @@ def test_distance_func():
     pixel_info[4,1] = 5.0
     pixel_info[4,2] = 50.0
 
-    assert 0.0 == recon.distance_func(np.array([2.0, 2.0, 20.0]), recon.find_centroid(pixel_info), recon.find_direction(pixel_info))
+    assert 0.0 == recon.distance_func(np.array([2.0, 2.0, 20.0]), recon.find_centroid(pixel_info), recon.find_direction(pixel_info, 10))
     assert 0.0 == recon.measure(pixel_info)
 
     #Another test, this time all the points do not lie on a straight line. 4 of the 5
@@ -98,7 +98,7 @@ def test_distance_func():
     pixel_info_2[4,1] = 5.0
     pixel_info_2[4,2] = 50.0
 
-    assert 0.0 != recon.distance_func(pixel_info_2[1], recon.find_centroid(pixel_info_2), recon.find_direction(pixel_info_2))
+    assert 0.0 != recon.distance_func(pixel_info_2[1], recon.find_centroid(pixel_info_2), recon.find_direction(pixel_info_2, 10))
     assert 0.0 != recon.measure(pixel_info_2)
 
 
