@@ -2,6 +2,7 @@
 """Testing for the geometry class."""
 import numpy as np # type: ignore
 import reconstruction as recon
+import pytest
 
 # NOTE: the method name needs to start with "test" to be recognized
 # by the unittest test runner. unittest is from the python standard
@@ -107,6 +108,32 @@ def test_distance_func():
     assert 0.0 != recon.distance_func(pixel_info_2[1], recon.find_centroid(pixel_info_2), recon.find_direction(pixel_info_2, 10))
     assert 0.0 != recon.measure(pixel_info_2)
 
+def test_line_degenerate():
+    """Test behaviour on a degenerate line, i.e. a series of identical points"""
+    direction = np.array([0., 0., 0.])
+    starting_point = np.array([5., 1.23, np.pi])
+    pixel_info = create_line_test_case(direction, starting_point, 11)
+    assert (starting_point == recon.find_centroid(pixel_info)).all()
+    # see https://docs.pytest.org/en/stable/assert.html
+    with pytest.raises(ValueError):
+        # expect this to fail, rasing a ValueError, since no direction can be found.
+        recon.find_direction(pixel_info)
+
+def test_line_two_directions():
+    """Test behaviour when the input data consists of multiple lines in different direction"""
+    direction_1 = np.array([0., 0., 1.])
+    direction_2 = np.array([0., 0., 0.6])
+    starting_point = np.array([0., 0., 0.])
+    line_1 = create_line_test_case(direction_1, starting_point, 10)
+    line_2 = create_line_test_case(direction_2, starting_point, 10)
+
+    rec_direction = recon.find_direction(np.concatenate(line_1, line_2))
+
+    # the reconstructed direction should lie in between the two lines' directions
+    assert ((direction_1 - rec_direction) == (rec_direction - direction_2)).all()
 
 
-    
+def create_line_test_case(direction, starting_point, number_of_points):
+    """Create a bunch of evenly spaced points along a line to use as test cases"""
+    pixel_info = np.array([starting_point * i for i in range(number_of_points)])
+    return pixel_info
