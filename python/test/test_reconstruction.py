@@ -31,16 +31,22 @@ def test_line():
     pixel_info[4,1] = 5.0
     pixel_info[4,2] = 50.0
 
-    a = np.array([3,3,30])
-    b = np.array([5,5,50])
+    # start and end point of the line
+    start_point = pixel_info[0]
+    end_point = pixel_info[-1]
 
-    c = np.array([1,1,10]) 
+    # caculate centroid "analytically"
+    centroid = (start_point + end_point) / 2
 
-    centroid = (a + b)/2
-    direction = (c/(102)**(0.5))
-    point = np.array([2,2,20])
-
+    # compare numerically computed centroid to "analytically" computed centroid
     assert (centroid == recon.find_centroid(pixel_info)).all()
+
+    # direction = endpoint - startpoint
+    direction_non_normalized = end_point - start_point
+    # normalize direction to prepare for comparison
+    direction = direction_non_normalized / np.linalg.norm(direction_non_normalized)
+
+    # compare numerically computed direction to "analytically" computed direction
     assert (direction == recon.find_direction(pixel_info, 10)).all()
 
 
