@@ -29,7 +29,7 @@ class EventManager:
         """Create a new `EventId` generator."""
         self.__counter = 0
 
-    def new_id(self) -> EventId:
+    def _new_id(self) -> EventId:
         """Return a new unique id."""
         # save old counter state, to be returned
         # this ensures the ids start at 0
