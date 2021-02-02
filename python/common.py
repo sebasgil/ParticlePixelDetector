@@ -16,17 +16,17 @@ EventId = int
 
 
 # TODO: employ singleton pattern
-class EventManager:
+class EventFactory:
     """
-    Generate event ids.
+    Create new Events, each with a unique id.
 
-    Used to generate unique identifiers for events. These unique
+    Used to create new events with unique identifiers. These unique
     identifiers might be used for example in saving events to external
     storage (e.g. a file, a database).
     """
 
     def __init__(self):
-        """Create a new `EventId` generator."""
+        """Create a new `EventFactory`"""
         self.__counter = 0
 
     def _new_id(self) -> EventId:
@@ -38,9 +38,18 @@ class EventManager:
         self.__counter += 1
         return new_id
 
-    def generate_event(self, time, pixel):
-        self._new_id()
-        return Event(self.__counter, time, pixel)
+    def new_event(self, activation_times, pixel_positions):
+        """
+        Return a new Event with a unique id and the given time and pixel data.
+        
+        Parameters
+        ----------
+        activation_times: numpy array
+            An (N,) array of activation times of pixels
+        pixel_positions: numpy array
+            An (N, 3) array of positions of activated pixels
+        """
+        return Event(self._new_id(), activation_times, pixel_positions)
 
 
 class Event:
@@ -49,6 +58,10 @@ class Event:
 
     An event is the result of a single particle passing through the
     detector. It contains all of the detectors measurements.
+
+    WARNING
+    -------
+    Events should only be created via the `new_event` method on `common.EventFactory`
     """
 
     def __init__(self, id, time, pixel):

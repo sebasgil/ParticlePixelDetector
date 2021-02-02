@@ -5,7 +5,7 @@ Simulation of events.
 import numpy as np
 from scipy.spatial.distance import cdist  # package to calculate the euclidean distance
 
-from common import EventManager, DetectorGeometry, Pixel
+from common import EventFactory, DetectorGeometry, Pixel
 from generation import PathGenerator
 
 class EventGenerator:
@@ -24,7 +24,7 @@ class EventGenerator:
         self.geometry = geometry
         self.panes = self.geometry.panes
         self.path_generator = PathGenerator(geometry)
-        self.event_generator = self.common.EventManager()
+        self.event_factory = EventFactory()
 
     def simulate(self):
         """Does the main simulation work. It calculates the intersection points,
@@ -44,7 +44,7 @@ class EventGenerator:
             triggered_pixel = pane.get_pixel_from_position(pane_intersection_point)
             heuristic_max_pixel_radius = pane.heuristic_max_pixel_radius
             if self.check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
-                event = self.event_generator.generate_event(intersection_time, triggered_pixel)
+                event = self.event_factory.new_event(intersection_time, triggered_pixel)
                 events.append(event)
 
         return events
