@@ -23,7 +23,7 @@ class OrientationGenerator:
         self._seed = seed
         # initialize random generator
         self._rng = numpy.random.default_rng(self._seed)
-        self._opening_angle = DetectorGeometry.source_opening_angle * np.pi/ 180
+        self._opening_angle = DetectorGeometry.source_opening_angle
         self._direction = DetectorGeometry.source_direction
         
     def generate_random_sphere_vector():
@@ -33,13 +33,13 @@ class OrientationGenerator:
 	normalized_vector = vector / np.linalg.norm(vector)
 	return normalized_vector
 
-    def generate_solid_angle():
+    def generate_orientation_vector():
 	 '''Generate a random sphere vector and check whether its orientation
 	 aligns with that of the opening angle.'''
 	     while True:
-		solid_angle = get_random_sphere_vector()
-		if solid_angle.dot(self._direction) < np.cos(self._opening_angle):
-		    return random_unit_vector
+		orientation_vector = get_random_sphere_vector()
+		if orientation_vector.dot(self._direction) < np.cos(self._opening_angle  * np.pi/ 180):
+		    return orientation_vector
 
 class PathGenerator:
     """Generates the path that a single particle takes through the detector."""
