@@ -39,7 +39,7 @@ class EventManager:
         return new_id
 
     def generate_event(self, time, pixel):
-        self.new_id()
+        self._new_id()
         return Event(self.__counter, time, pixel)
 
 
