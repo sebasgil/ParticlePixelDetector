@@ -28,8 +28,8 @@ def test_return_type():
     """
     Checks if the generator generates EventIds
     """
-    one_id = common.EventIdGenerator().new_id()
-    assert isinstance(one_id, common.EventId)
+    event = common.EventManager().generate_event(None, None)
+    assert isinstance(event.get_id(), common.EventId)
 #    self.assertIsInstance(
 #            one_id,
 #            common.EventId,
