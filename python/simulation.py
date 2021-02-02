@@ -30,7 +30,7 @@ class EventGenerator:
         """Does the main simulation work. It calculates the intersection points,
        validates them and returns a list of triggered pixels.
        """
-        particle_path, time_path = self.generate_random_path()
+        particle_path, time_path = self._generate_random_path()
 
         # arrays for storing the hits' data
         activation_times = np.array([])
@@ -38,7 +38,7 @@ class EventGenerator:
 
         for pane in self.panes:
             pane_pixel_positions = pane.pixel_positions()
-            intersection_idxs = self.search_for_intersections(particle_path, pane_pixel_positions)
+            intersection_idxs = self._search_for_intersections(particle_path, pane_pixel_positions)
 
             pane_intersection_point = pane_pixel_positions[intersection_idxs[0]]
             path_intersection_point = particle_path[intersection_idxs[1]]
@@ -47,7 +47,7 @@ class EventGenerator:
             triggered_pixel = pane.get_pixel_from_position(pane_intersection_point)
             heuristic_max_pixel_radius = pane.heuristic_max_pixel_radius
 
-            if self.check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
+            if self._check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
                 # hit is valid save activation time and pixel position
                 # TODO: improve performance: np.append always copies the array
                 np.append(activation_times, intersection_time)
@@ -57,11 +57,11 @@ class EventGenerator:
         return event
 
 
-    def check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
+    def _check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
         dist = np.linalg.norm(path_intersection_point - pixel.position)
         return dist <= max_radius
 
-    def search_for_intersections(self, detector_pane, random_path):
+    def _search_for_intersections(self, detector_pane, random_path):
         """Calculates the euclidean distance for each point of the particle path and returns the indicies
         of the points with the minimal distance (for the path and for the pane)
 
@@ -74,7 +74,7 @@ class EventGenerator:
         min_dist_index = np.unravel_index(dist.argmin(), dist.shape)  # find the pixel pair with min. distance
         return min_dist_index
 
-    def generate_random_path(self):
+    def _generate_random_path(self):
         """Generates the random path by means of the PathGenerator class
 
         Return
