@@ -31,7 +31,10 @@ class EventGenerator:
        validates them and returns a list of triggered pixels.
        """
         particle_path, time_path = self.generate_random_path()
-        events = []
+
+        # arrays for storing the hits' data
+        activation_times = np.array([])
+        pixel_positions = np.array([])
 
         for pane in self.panes:
             pane_pixel_positions = pane.pixel_positions()
@@ -39,15 +42,19 @@ class EventGenerator:
 
             pane_intersection_point = pane_pixel_positions[intersection_idxs[0]]
             path_intersection_point = particle_path[intersection_idxs[1]]
-            intersection_time = time_path[intersection_idxs[1]]
+            intersection_time: float = time_path[intersection_idxs[1]]
 
             triggered_pixel = pane.get_pixel_from_position(pane_intersection_point)
             heuristic_max_pixel_radius = pane.heuristic_max_pixel_radius
-            if self.check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
-                event = self.event_factory.new_event(intersection_time, triggered_pixel)
-                events.append(event)
 
-        return events
+            if self.check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
+                # hit is valid save activation time and pixel position
+                # TODO: improve performance: np.append always copies the array
+                np.append(activation_times, intersection_time)
+                np.append(pixel_positions, path_intersection_point)
+
+        event = self.event_factory.new_event(activation_times, pixel_positions)
+        return event
 
 
     def check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
