@@ -26,7 +26,7 @@ class EventGenerator:
         self.path_generator = PathGenerator(geometry)
         self.event_factory = EventFactory()
 
-    def simulate(self):
+    def get_random_event(self):
         """Does the main simulation work. It calculates the intersection points,
        validates them and returns a list of triggered pixels.
        """

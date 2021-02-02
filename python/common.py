@@ -64,9 +64,9 @@ class Event:
     Events should only be created via the `new_event` method on `common.EventFactory`
     """
 
-    def __init__(self, id, time, pixel):
+    def __init__(self, event_id, time, pixel):
         """Create a new Event."""
-        self.id = id
+        self.id = event_id
         self.event_time = time
         self.triggered_pixel = pixel
 

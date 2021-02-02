@@ -2,10 +2,10 @@
 Test all components working together.
 """
 
+import pytest
 import common
 import simulation
 import reconstruction
-import pytest
 
 
 # For now this just serves as an example of how the library is
