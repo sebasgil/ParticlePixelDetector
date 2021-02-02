@@ -35,10 +35,10 @@ class Reconstructor:
         reconstructed_path = ReconstructedPath(
             event.get_id(),
             find_direction(
-                event.activated_pixel_positions(),
+                event.get_activated_pixel_positions(),
                 self.number_of_iterations
             ),
-            find_centroid(event.activated_pixel_positions())
+            find_centroid(event.get_activated_pixel_positions())
         )
 
         return reconstructed_path

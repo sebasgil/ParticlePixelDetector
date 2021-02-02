@@ -64,15 +64,18 @@ class Event:
     Events should only be created via the `new_event` method on `common.EventFactory`
     """
 
-    def __init__(self, event_id, time, pixel):
+    def __init__(self, event_id, activation_times, pixel_positions):
         """Create a new Event."""
         self.id = event_id
-        self.event_time = time
-        self.triggered_pixel = pixel
+        self.activation_times = activation_times
+        self.pixel_positions = pixel_positions
 
     def get_id(self) -> EventId:
         """Return the events unique id."""
         return self.id
+    
+    def get_activated_pixel_positions(self):
+        return self.pixel_positions
 
 
 class DetectorGeometry:
