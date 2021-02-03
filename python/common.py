@@ -176,7 +176,7 @@ class Pane:
         single_row_ns = numpy.arange(self.n_pixels_x)
         # [0, 1, ... 1999, 0, 1, ... 1999 ..... 0, 1, ... 1999]
         #          ------- n_pixels_y times -----
-        ns = numpy.repeat(single_row_ns, self.n_pixels_y)
+        ns = numpy.tile(single_row_ns, self.n_pixels_y)
 
         # [0, 0, 0 ... 0, 1, 1, 1, ... 1, ........  1999, 1999, 1999, ... 1999]
         ms = numpy.concatenate(
