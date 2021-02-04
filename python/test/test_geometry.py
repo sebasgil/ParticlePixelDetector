@@ -58,6 +58,27 @@ def test_pixel_array():
     assert pixel_positions.shape == (4_000_000, 3)
 
 
+def test_agree_pixels_pixel_positions():
+    """
+    Test if `Pane.pixels` and `Pane.pixel_positions` give the same positions for the pixels.
+    
+    The two functions compute the pixel positions in slightly different ways so it makes sense to compare their ouptuts.
+    """
+    p = common.Pane(0, 0.3, n_pixels_x=7, n_pixels_y=23)
+
+    pixels = p.pixels()
+    pixel_positions_from_pixels = numpy.array(list(map(lambda pixel: pixel.position, pixels)))
+    pixel_positions_from_pixels_sorted = numpy.sort(pixel_positions_from_pixels, axis = 0)
+
+    pixel_positions = p.pixel_positions()
+    pixel_positions_sorted = numpy.sort(pixel_positions, axis = 0)
+
+    print(pixel_positions_from_pixels_sorted)
+    print(pixel_positions_sorted)
+
+    #assert numpy.allclose(pixel_positions_sorted, pixel_positions_from_pixels_sorted)
+    assert (pixel_positions_sorted == pixel_positions_from_pixels_sorted).all()
+
 def is_float(f):
     """Assert that the argument is a floating point number."""
     assert isinstance(f, float)
