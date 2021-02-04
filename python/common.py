@@ -180,11 +180,11 @@ class Pane:
 
         # [0, 0, 0 ... 0, 1, 1, 1, ... 1, ........  1999, 1999, 1999, ... 1999]
         ms = numpy.concatenate(
-            [numpy.full((self.n_pixels_y,), n) for n in range(self.n_pixels_x)]
+            [numpy.full((self.n_pixels_x,), n) for n in range(self.n_pixels_y)]
         )
 
         xs = ns * pixel_width
-        ys = ms * pixel_width
+        ys = ms * pixel_height
         zs = numpy.zeros(self.n_pixels_x * self.n_pixels_y)
 
         # [xs
