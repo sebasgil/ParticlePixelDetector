@@ -109,31 +109,74 @@ def test_distance_func():
     assert 0.0 != recon.measure(pixel_info_2)
 
 def test_line_degenerate():
-    """Test behaviour on a degenerate line, i.e. a series of identical points"""
+    """Test behaviour on a degenerate line, i.e. a series of identical points."""
+    # direction is 0, so all the lines points are the same
     direction = np.array([0., 0., 0.])
     starting_point = np.array([5., 1.23, np.pi])
-    pixel_info = create_line_test_case(direction, starting_point, 11)
-    assert (starting_point == recon.find_centroid(pixel_info)).all()
-    # see https://docs.pytest.org/en/stable/assert.html
+    pixel_info = create_line_test_case(starting_point, direction, 11)
+
+    # allclose is actually needed here, probably because of the use of np.pi in the starting_point, causing rounding errors
+    assert np.allclose(starting_point, recon.find_centroid(pixel_info))
+
+    # see https://docs.pytest.org/en/stable/assert.html about how `pytest.raises` works
     with pytest.raises(ValueError):
         # expect this to fail, rasing a ValueError, since no direction can be found.
-        recon.find_direction(pixel_info)
+        recon.find_direction(pixel_info, 10)
 
 def test_line_two_directions():
-    """Test behaviour when the input data consists of multiple lines in different direction"""
-    direction_1 = np.array([0., 0., 1.])
-    direction_2 = np.array([0., 0., 0.6])
+    """Test behaviour when the input data consists of multiple lines in different direction."""
+    direction_1 = np.array([1., 0., 0.])
+    direction_2 = np.array([1.1, 0., 0.])
     starting_point = np.array([0., 0., 0.])
-    line_1 = create_line_test_case(direction_1, starting_point, 10)
-    line_2 = create_line_test_case(direction_2, starting_point, 10)
+    line_1 = create_line_test_case(starting_point, direction_1, 10)
+    line_2 = create_line_test_case(starting_point, direction_2, 10)
 
-    rec_direction = recon.find_direction(np.concatenate(line_1, line_2))
+    # union of the points of line_1 and line_2
+    both_lines = np.concatenate((line_1, line_2))
+    assert both_lines.shape == (20, 3)
+    
+    reconstructed_direction = recon.find_direction(both_lines, 10)
 
     # the reconstructed direction should lie in between the two lines' directions
-    assert ((direction_1 - rec_direction) == (rec_direction - direction_2)).all()
+    # which leads to two condition
+
+    # first (necessary) condition:
+    # this means it should lie in their span (a 2d plane)
+    # this means it should be orthogonal to their cross product
+    span_normal = np.cross(direction_1, direction_2)
+    assert np.dot(reconstructed_direction, span_normal) == 0
+
+    # second (now sufficient) condition: (maybe the first isn't even necessary?)
+    # the sum of the two angles that the reconstructed direction makes with the two line directions
+    # should be equal to the angle between the two lines' directions
+
+    def angle_between(a, b):
+        return np.arccos(
+            np.dot(a, b)
+            / np.linalg.norm(a)
+            / np.linalg.norm(b)
+        )
+
+    angle_1 = angle_between(reconstructed_direction, direction_1)
+    angle_2 = angle_between(reconstructed_direction, direction_1)
+    angle_between_1_and_2 = angle_between(direction_1, direction_2)
+    assert angle_1 + angle_2 == angle_between_1_and_2
 
 
-def create_line_test_case(direction, starting_point, number_of_points):
-    """Create a bunch of evenly spaced points along a line to use as test cases"""
-    pixel_info = np.array([starting_point * i for i in range(number_of_points)])
+def test_inconvenient_line():
+    """Due to the peculiarites in how the starting_value of the iterative reconstruction algorithm is defined it might fail when the line is pointing in a specific direction"""
+    # lines that go only in x, y, z direction respectively
+    x_line = create_line_test_case(np.zeros(3), np.array([1, 0, 0]), 10)
+    y_line = create_line_test_case(np.zeros(3), np.array([0, 1, 0]), 10)
+    z_line = create_line_test_case(np.zeros(3), np.array([0, 0, 1]), 10)
+
+    assert np.isfinite(recon.find_direction(x_line, 10)).all()
+    assert np.isfinite(recon.find_direction(y_line, 10)).all()
+    assert np.isfinite(recon.find_direction(z_line, 10)).all()
+
+
+def create_line_test_case(starting_point, direction, number_of_points):
+    """Create a bunch of evenly spaced points along a line to use as test cases."""
+    pixel_info = np.array([starting_point + (direction * i) for i in range(number_of_points)])
+    assert pixel_info.shape == (number_of_points, 3)
     return pixel_info
