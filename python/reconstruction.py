@@ -85,13 +85,51 @@ def distance_func(point, point_on_line, dcs_of_line):
     return distance
 
 
-def measure(pixel_info):
-    sum_distances = 0.0
+def measure_error(pixel_info):
+    sum_errors = 0.0
     for point in pixel_info:
-        sum_distances += distance_func(
+        distance = distance_func(
             point,
             find_centroid(pixel_info),
             find_direction(pixel_info, 10)
         )
+        sum_errors += (distance*distance)
 
-    return sum_distances
+    return sum_errors
+
+def confidence(pixel_info):
+    centroid = find_centroid(pixel_info)
+    sum_of_dot_products = 0.0
+    confidence = 0.0
+    for point in pixel_info:
+        pointing_vector = point - centroid
+        sum_of_dot_products += np.dot(pointing_vector,pointing_vector)
+    
+    average_of_dot_products = (sum_of_dot_products/len(pixel_info))
+
+    for point in pixel_info:
+        pointing_vector = point - centroid
+        confidence += abs(np.dot(pointing_vector,pointing_vector) - average_of_dot_products)
+    
+    confidence = (confidence/average_of_dot_products)
+
+    return confidence
+
+def relative_error(pixel_info, number_of_iterations):
+    centroid = find_centroid(pixel_info)
+    direction = find_centroid(pixel_info, number_of_iterations)
+    average_error = measure_error(pixel_info)/len(pixel_info)
+    relative_error = 0.0
+
+    for point in pixel_info:
+        distance = distance_func(point, centroid, direction)
+        relative_error += ((distance*distance) - average_error)
+    
+    relative_error = (relative_error/average_error)
+
+    return relative_error
+
+
+
+
+
