@@ -41,7 +41,7 @@ class OrientationGenerator:
 
 class PathGenerator:
 	"""Generates the path that a single particle takes through the detector."""
-	def __init__(self, orientation, velocity, samples):
+	def __init__(self, orientation: OrientationGenerator, samples: int):
 		"""
 		Set the initial orientation and velocity for a particle path 
 	      	ParticlePath.
@@ -53,14 +53,25 @@ class PathGenerator:
 		velocity: array
 			The initial velocity of the particle stored as a vector
 			Because the detector is massless, velocity remains constant
+			Because we are interested in particle physics applications,
+			the particle velocity will be taken to be between 50% and 99%
+			the speed of light
 		samples: integer
-			the number of time-steps in a particle trajectory
+			The number of time-steps for the particle path as chosen by the user
 		"""    
-		self._orientation = OrientationGenerator.get_solid_angle()
-		self._velocity = velocity # how is this generated? from where?
-		self._samples = samples # how is this generated? from where?
-
-	def generate_coordinates(self, seed):
+		self._orientation = orientation.generate_orientation_vector()
+		self._samples = samples
+	
+	def generate_velocity(self, samples):
+		percentage = np.random.uniform(0.5,0.99)
+		speed = 2.99792e8*percentage
+		geometry_instance = DetectorGeometry()
+		particle_instance = OrientationGenerator(geometry_instance, 0)
+		particle_orientation = particle_instance.generate_orientation_vector()
+		velocity = speed*particle_orientation
+		return velocity
+		
+	def generate_coordinates(self, samples):
 		"""
 		Fill in an array of the particle's coordinates for the number
 		of samples given
@@ -72,8 +83,10 @@ class PathGenerator:
 			for the number of samples given
 		"""
 		# initialize array of the correct shape and number of time steps
-		self.coordinates = np.zeroes([samples,3])
-		for time_step in np.arange(samples):
+		self.coordinates = np.zeros([samples,3])
+		# create a velocity vector
+
+		for time_step in np.arange(samples + 1):
 			self.coordinates[time_step + 1] = self.coordinates[time_step] + np.array(self._velocity)
 			# TO-DO: test that this works, especially for final time-steps
 		return self.coordinates
