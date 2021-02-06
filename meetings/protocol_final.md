@@ -15,11 +15,21 @@ This should be the last meeting. In lieu of writing a separate document for the 
 * Open Issues: 7/10
 * Number of branches: 19
 
+### Common
+
+* Main contributors: Massin, Nermine, Varun
+* Number of branches: 3
+* Progress level: 100/100
+* Running as expected?: Yes
+* Integrated with other modules?: Yes
+* Tests passed?: Yes
+* Missing features?: implement rotation and translation of panes, resolve misaslignment issues
+
 ### Generation
 
 * Main contributors: Sebastián, Massin
 * Number of branches: 4
-* Progress level: /100
+* Progress level: 60/100
 * Running as expected?: No
 * Integrated with other modules?: No
 * Tests passed?: No
@@ -27,43 +37,34 @@ This should be the last meeting. In lieu of writing a separate document for the 
 
 ### Simulation
 
-* Main contributors:
-* Number of branches:
-* Progress level: /100
-* Running as expected?:
-* Integrated with other modules?:
-* Tests passed?:
-* Missing features?:
+* Main contributors: Igor
+* Number of branches: 2
+* Progress level: 85/100
+* Running as expected?: No
+* Integrated with other modules?: With Reconstruction; waiting for Generation
+* Tests passed?: No tests
+* Missing features?: Add scattering and multiple pixel activation
 
 ### Reconstruction
 
-* Main contributors:
-* Number of branches:
-* Progress level: /100
-* Running as expected?:
-* Integrated with other modules?:
-* Tests passed?:
-* Missing features?:
+* Main contributors: Shobith
+* Number of branches: 5
+* Progress level: 95/100
+* Running as expected?: Yes
+* Integrated with other modules?: With Simulation
+* Tests passed?: Yes but there are more tests to write.
+* Missing features?: time not taken into account, need to account for speed
 
 ### Verification
 
 * Main contributors:
 * Number of branches:
-* Progress level: /100
+* Progress level: 0/100
 * Running as expected?:
 * Integrated with other modules?:
 * Tests passed?:
 * Missing features?:
 
-### Statistics
-
-* Main contributors:
-* Number of branches:
-* Progress level: /100
-* Running as expected?:
-* Integrated with other modules?:
-* Tests passed?:
-* Missing features?:
 
 ## Status Reports - Person Wise
 
