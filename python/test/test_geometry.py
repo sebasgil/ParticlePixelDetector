@@ -43,7 +43,7 @@ def test_pixel():
 
 
 def test_pixel_list():
-    """Test the pixels function on Pane."""
+    """Test the `pixels` function on Pane."""
     p = common.Pane(0, 0.3, n_pixels_x=20, n_pixels_y=20)
     pixels = p.pixels()
     assert isinstance(pixels, list)
@@ -51,12 +51,33 @@ def test_pixel_list():
 
 
 def test_pixel_array():
-    """Test the pixel_positions function on Pane."""
+    """Test the `pixel_positions` function on Pane."""
     p = common.Pane(0, 0.3)
     pixel_positions = p.pixel_positions()
     assert isinstance(pixel_positions, numpy.ndarray)
     assert pixel_positions.shape == (4_000_000, 3)
 
+
+def test_agree_pixels_pixel_positions():
+    """
+    Test if `Pane.pixels` and `Pane.pixel_positions` give the same positions for the pixels.
+    
+    The two functions compute the pixel positions in slightly different ways so it makes sense to compare their ouptuts.
+    """
+    p = common.Pane(0, 0.3, n_pixels_x=7, n_pixels_y=23)
+
+    pixels = p.pixels()
+    pixel_positions_from_pixels = numpy.array(list(map(lambda pixel: pixel.position, pixels)))
+    pixel_positions_from_pixels_sorted = numpy.sort(pixel_positions_from_pixels, axis = 0)
+
+    pixel_positions = p.pixel_positions()
+    pixel_positions_sorted = numpy.sort(pixel_positions, axis = 0)
+
+    print(pixel_positions_from_pixels_sorted)
+    print(pixel_positions_sorted)
+
+    #assert numpy.allclose(pixel_positions_sorted, pixel_positions_from_pixels_sorted)
+    assert (pixel_positions_sorted == pixel_positions_from_pixels_sorted).all()
 
 def is_float(f):
     """Assert that the argument is a floating point number."""

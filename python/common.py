@@ -110,9 +110,9 @@ class Pane:
     """
 
     def __init__(
-        self, uid: int, z_offset: float,
-        width: float = 0.2, height: float = 0.2,
-        n_pixels_x: int = 2000, n_pixels_y: int = 2000
+        self, uid: int, z_offset: float, width: float = 0.2, height: float = 0.2,
+        n_pixels_x: int = 2000, n_pixels_y: int = 2000, 
+        z_error: float = 0, x_error: float = 0, y_error: float = 0, 
     ):
         """Create a new pane.
 
@@ -129,7 +129,7 @@ class Pane:
         n_pixels_x: int
             The number of (equally spaced) pixels in the x direction.
         n_piyels_x: int
-            The number of (equally spaced) piyels in the y direction.
+            The number of (equally spaced) pixels in the y direction.
         """
         self.uid = uid
         self.width = width
@@ -137,9 +137,11 @@ class Pane:
         self.z_offset = z_offset
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
-        self.center = numpy.array([0, 0, self.z_offset])
         ## WARNING: Assumes cube pixels !!
         self.heuristic_max_pixel_radius = numpy.sqrt(3) * (width / n_pixels_x) / 2
+        self.install_error = numpy.array([x_error, y_error, z_error])
+        self.center = numpy.array([0, 0, self.z_offset]) + self.install_error 
+    
 
     def pixels(self) -> List[Pixel]:
         """Return all pixels of this pane.
@@ -202,15 +204,15 @@ class Pane:
         single_row_ns = numpy.arange(self.n_pixels_x)
         # [0, 1, ... 1999, 0, 1, ... 1999 ..... 0, 1, ... 1999]
         #          ------- n_pixels_y times -----
-        ns = numpy.repeat(single_row_ns, self.n_pixels_y)
+        ns = numpy.tile(single_row_ns, self.n_pixels_y)
 
         # [0, 0, 0 ... 0, 1, 1, 1, ... 1, ........  1999, 1999, 1999, ... 1999]
         ms = numpy.concatenate(
-            [numpy.full((self.n_pixels_y,), n) for n in range(self.n_pixels_x)]
+            [numpy.full((self.n_pixels_x,), n) for n in range(self.n_pixels_y)]
         )
 
         xs = ns * pixel_width
-        ys = ms * pixel_width
+        ys = ms * pixel_height
         zs = numpy.zeros(self.n_pixels_x * self.n_pixels_y)
 
         # [xs
