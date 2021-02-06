@@ -195,15 +195,15 @@ def test_line_degenerate():
 
 def test_line_two_directions():
     """Test behaviour when the input data consists of multiple lines in different direction."""
-    direction_1 = np.array([1., 0., 0.])
-    direction_2 = np.array([1.1, 0., 0.])
+    direction_1 = np.array([0, 0., 1.])
+    direction_2 = np.array([0, 0., 1.1])
     starting_point = np.array([0., 0., 0.])
     line_1 = create_line_test_case(starting_point, direction_1, 10)
-    line_2 = create_line_test_case(starting_point, direction_2, 10)
+    line_2 = create_line_test_case(starting_point, direction_2, 10)[1:]
 
     # union of the points of line_1 and line_2
     both_lines = np.concatenate((line_1, line_2))
-    assert both_lines.shape == (20, 3)
+    assert both_lines.shape == (19, 3)
     
     reconstructed_direction = recon.find_direction(both_lines, 10)
 
@@ -233,6 +233,7 @@ def test_line_two_directions():
     assert angle_1 + angle_2 == angle_between_1_and_2
 
 
+@pytest.mark.xfail
 def test_inconvenient_line():
     """Due to the peculiarites in how the starting_value of the iterative reconstruction algorithm is defined it might fail when the line is pointing in a specific direction"""
     # lines that go only in x, y, z direction respectively
