@@ -51,7 +51,7 @@ def find_centroid(pixel_info):  # returns centroid
 
 def find_direction(pixel_info, number_of_iterations):  # returns direction
     centroid = find_centroid(pixel_info)
-    direction = np.array([1.0, 0.0, 0.0])
+    direction = np.array([0.0, 0.0, 1.0])
     for _ in range(number_of_iterations):
         next_direction = np.array([0.0, 0.0, 0.0])
 
@@ -85,19 +85,21 @@ def distance_func(point, point_on_line, dcs_of_line):
     return distance
 
 
-def measure_error(pixel_info):
+def measure_error(set_of_points, pixel_info, number_of_iterations):
     sum_errors = 0.0
-    for point in pixel_info:
+    centroid = find_centroid(pixel_info)
+    direction = find_direction(pixel_info, number_of_iterations)
+    for point in set_of_points:
         distance = distance_func(
             point,
-            find_centroid(pixel_info),
-            find_direction(pixel_info, 10)
+            centroid,
+            direction
         )
         sum_errors += (distance*distance)
 
     return sum_errors
 
-def confidence(pixel_info):
+def inv_confidence(pixel_info):
     centroid = find_centroid(pixel_info)
     sum_of_dot_products = 0.0
     confidence = 0.0
