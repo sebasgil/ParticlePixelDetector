@@ -8,8 +8,9 @@ from common import DetectorGeometry, Pane
 # Define class instances required for tests
 geom_instance = DetectorGeometry()
 o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
-test_samples = 10
-path_instance = generation.PathGenerator(o_gen_instance, test_samples)
+trial_samples = 10
+trial_time_step = 0.1 # we don't know what this is.
+path_instance = generation.PathGenerator(o_gen_instance, trial_samples, trial_time_step)
 
 def test_random_sphere_vector():
 	"""Test generate_random_sphere_vector to verify that the object 
@@ -33,21 +34,23 @@ def test_particle_velocity():
 	"""Test generate_speed to ensure the number of samples at a given speed
 	is enough to reach the end of the detector."""
 	test_orientation = o_gen_instance.generate_orientation_vector()
-	test_speed = path_instance.generate_velocity(test_samples).dot(geom_instance.source_direction)
-	detector_length = 0.3 + 5*0.5
-	assert test_speed*test_samples > detector_length
+	test_speed = path_instance.generate_velocity().dot(geom_instance.source_direction)
+	detector_length = 0.3 + 5*0.5 # hard-coded for now
+	assert test_speed*trial_samples > detector_length
 
 def test_path_coordinates():
-	"""Test bla"""
+	"""Test generate_coordinates to make sure that a non-empty array is returned and that the
+	generated particle passes close enough to the panes to be detectable"""
 	# check that coordinates array is not empty
-	test_coordinates = path_instance.generate_coordinates(test_samples)
+	test_coordinates = path_instance.generate_coordinates(trial_samples)
 	assert test_coordinates.any() != 0.
-	# check that generated particle goes through all panes
+	# check that generated particle has enough samples to go close to panes
+	# assert
 	# max(map(lambda p: np.linalg.norm(p.center - geom_instance.source_position), pane_instance.z_offset))
 
-def test_source_on():
-	"""Test that the source can generate particle trajectories in a Poisson process"""
+#def test_source_on():
+#	"""Test that the source can generate particle trajectories in a Poisson process"""
 	
-def test_path_intersections():
-	"""Test that particle events are not simultaneously instantiated
-	and that particle paths do not intersect each other."""
+#def test_path_intersections():
+#	"""Test that particle events are not simultaneously instantiated
+#	and that particle paths do not intersect each other."""

@@ -41,7 +41,7 @@ class OrientationGenerator:
 
 class PathGenerator:
 	"""Generates the path that a single particle takes through the detector."""
-	def __init__(self, orientation: OrientationGenerator, samples: int):
+	def __init__(self, geometry: DetectorGeometry, samples: int, time_step: float):
 		"""
 		Set the initial orientation and velocity for a particle path 
 	      	ParticlePath.
@@ -50,20 +50,30 @@ class PathGenerator:
 		----------
 		orientation: array
 			The initial orientation of the particle drawn
-		velocity: array
-			The initial velocity of the particle stored as a vector
-			Because the detector is massless, velocity remains constant
-			Because we are interested in particle physics applications,
-			the particle velocity will be taken to be between 50% and 99%
-			the speed of light
 		samples: integer
 			The number of time-steps for the particle path as chosen by the user
+		time_step: float
+			The elapsed time between samples of the path
 		"""    
-		self._orientation = orientation.generate_orientation_vector()
+		self._geometry = DetectorGeometry()
+		self._orientation_instance = OrientationGenerator(self._geometry, 0)
 		self._samples = samples
-	
-	def generate_velocity(self, samples):
-		percentage = np.random.uniform(0.5,0.99)
+		self._time_step = time_step
+
+	def generate_velocity(self):
+		"""
+		Return the initial velocity of the particle stored as a vector
+		Because the detector is massless, velocity remains constant
+		We are interested in particle physics applications, so
+		the particle velocity will be taken to be between 5% and 99%
+		the speed of light
+
+		Output
+		----------
+
+			velocity: array
+		"""
+		percentage = np.random.uniform(0.05,0.99)
 		speed = 2.99792e8*percentage
 		geometry_instance = DetectorGeometry()
 		particle_instance = OrientationGenerator(geometry_instance, 0)
@@ -83,10 +93,10 @@ class PathGenerator:
 			for the number of samples given
 		"""
 		# initialize array of the correct shape and number of time steps
-		self.coordinates = np.zeros([samples,3])
-		# create a velocity vector
-
-		for time_step in np.arange(samples + 1):
-			self.coordinates[time_step + 1] = self.coordinates[time_step] + np.array(self._velocity)
-			# TO-DO: test that this works, especially for final time-steps
-		return self.coordinates
+		coordinates = np.zeros([samples,3])
+		coordinates[0] = self._geometry.source_position
+		particle_velocity = self.generate_velocity()
+		for index in range(samples - 1):		
+#		for index in enumerate(np.arange(0., samples, self._time_step)):
+			coordinates[index + 1] = coordinates[index] + particle_velocity*self._time_step
+		return coordinates
