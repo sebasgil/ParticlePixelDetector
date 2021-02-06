@@ -33,7 +33,6 @@ class Reconstructor:
         event: The event whose original path is to be reconstructed.
         """
         
-        check_pixel_info(event.get_activated_pixel_positions())
 
         reconstructed_path = ReconstructedPath(
             event.get_id(),
@@ -61,6 +60,9 @@ def find_direction(pixel_info, number_of_iterations):
     best fits the activated pixels  
     For more information on how this works please visit https://zalo.github.io/blog/line-fitting/ 
     """
+
+    check_pixel_info(pixel_info)
+
     centroid = find_centroid(pixel_info)
     direction = np.array([0.0, 0.0, 1.0]) #this is our initial direction
     for _ in range(number_of_iterations):
@@ -173,6 +175,6 @@ def check_pixel_info(pixel_info):
     for point_1 in pixel_info:
         for point_2 in pixel_info:
             if (point_1 == point_2).all():
-                raise Exception("There is atleast one repeated point") 
-
+                raise ValueError("There is atleast one repeated point in the points provided.")
+                break 
 
