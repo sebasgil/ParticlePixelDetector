@@ -170,9 +170,6 @@ class Pane:
         """
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
-        lower_left_corner = (
-            self.center - numpy.array([self.width/2, self.height/2, 0])
-        )
 
         # [0, 1, 2, ... 1999]
         single_row_ns = numpy.arange(self.n_pixels_x)
@@ -201,10 +198,11 @@ class Pane:
         # ]
         offset_vectors = numpy.array([xs, ys, zs]).T
 
+        # transform into pane center coordinate system
+        # -> self.center corresponds to [0, 0, 0]
         offset_vectors = offset_vectors + (
-            lower_left_corner
-            + numpy.array([pixel_width/2, pixel_height/2, 0])
-            - self.center
+            numpy.array([pixel_width/2, pixel_height/2, 0])
+            - numpy.array([self.width/2, self.height/2, 0])
         )
 
         # apply rotation matrix to offset_vectors
