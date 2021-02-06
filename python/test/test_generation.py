@@ -8,7 +8,10 @@ from common import DetectorGeometry
 def test_random_sphere_vector():
 	"""Test generate_random_sphere_vector to verify that the object 
 	normalized_vector is a 3D array with non-zero components and a norm of one."""
-	test_vector = OrientationGenerator.generate_random_sphere_vector()
+	# make instances
+	geom_instance = DetectorGeometry()
+	o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
+	test_vector = o_gen_instance.generate_random_sphere_vector()
 	assert isinstance(test_vector, array)
 	assert test_vector.shape == (3,)
 	for component in test_vector:
