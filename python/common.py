@@ -10,9 +10,11 @@ from __future__ import annotations
 
 from typing import List
 import numpy  # type: ignore
-
+import math as m
+from scipy.spatial.transform import Rotation as R
 # type alias for event ids
 EventId = int
+
 
 
 # TODO: employ singleton pattern
@@ -88,7 +90,8 @@ class Pane:
     def __init__(
         self, uid: int, z_offset: float, width: float = 0.2, height: float = 0.2,
         n_pixels_x: int = 2000, n_pixels_y: int = 2000, 
-        z_error: float = 0, x_error: float = 0, y_error: float = 0, 
+        z_error: float = 0, x_error: float = 0, y_error: float = 0,
+        theta_x: float = 0, theta_y: float = 0, theta_z: float = 0
     ):
         """Create a new pane.
 
@@ -114,7 +117,10 @@ class Pane:
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
         self.install_error = numpy.array([x_error, y_error, z_error])
-        self.center = numpy.array([0, 0, self.z_offset]) + self.install_error 
+        self.center = numpy.array([0, 0, self.z_offset]) + self.install_error
+        self.theta_x = theta_x
+        self.theta_y = theta_y
+        self.theta_z = theta_z
     
 
     def pixels(self) -> List[Pixel]:
@@ -203,10 +209,37 @@ class Pane:
         offset_vectors = offset_vectors + (
             numpy.array([pixel_width/2, pixel_height/2, 0])
             - numpy.array([self.width/2, self.height/2, 0])
+        )  
+             
+        r = R.from_euler(
+            'zyx',
+            [self.theta_z, self.theta_y, self.theta_x],
+            degrees=True
         )
-
-        # apply rotation matrix to offset_vectors
-
+       
+        offset_vectors = r.apply(offset_vectors)
+        
+        """theta_x = 90
+        theta_y = 90
+        theta_z = 90
+        
+        Rz = numpy.array(
+                  [[1, 0, 0],
+                  [ 0, m.cos(theta_z),-m.sin(theta_z)],
+                  [ 0, m.sin(theta_z), m.cos(theta_z)]]
+                  )
+        Rx = numpy.array([[1, 0, 0],
+                   [ 0, m.cos(theta_x),-m.sin(theta_x)],
+                   [ 0, m.sin(theta_x), m.cos(theta_x)]])
+       
+        Ry = numpy.array([[m.cos(theta_y), 0, m.sin(theta_y)],
+                   [0, 1, 0],
+                   [-m.sin(theta_y), 0, m.cos(theta_y)]])
+       
+        offset_vectors = numpy.dot(offset_vectors,Rz)"""
+                  
+        print(offset_vectors)
+        
         return (
             + self.center
             + offset_vectors
