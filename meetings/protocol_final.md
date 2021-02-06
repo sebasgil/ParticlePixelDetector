@@ -76,7 +76,9 @@ This should be the last meeting. In lieu of writing a separate document for the 
 ### Nermine
 
 ### Varun
-
+*
+*
+*
 ### Shobith
 
 ### Sebastián
