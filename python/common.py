@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from typing import List
 import numpy  # type: ignore
-import math as m
 from scipy.spatial.transform import Rotation as R
 # type alias for event ids
 EventId = int
@@ -107,8 +106,30 @@ class Pane:
             The panes height (in the y direction).
         n_pixels_x: int
             The number of (equally spaced) pixels in the x direction.
-        n_piyels_x: int
+        n_pixels_x: int
             The number of (equally spaced) pixels in the y direction.
+        x_error: float
+            The error of alignment (translation) in the x direction.            
+        y_error: float
+            The error of alignment (translation) in the y direction.
+        z_error: float
+            The error of alignment (translation) in the z direction.
+        theta_x: float
+            The angle of rotation about the x axis representing rotational
+            misalignment.
+        theta_y: float
+            The angle of rotation about the y axis representing rotational
+            misalignment.
+        theta_z: float
+           The angle of rotation about the z axis representing rotational
+           misalignment.
+         ----------
+        Euler angles method was used in order to implement the rotational error
+        in misalignment.
+        more to this method in this page:
+        https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.from_euler.html#scipy.spatial.transform.Rotation.from_euler
+      
+            
         """
         self.uid = uid
         self.width = width
@@ -120,10 +141,9 @@ class Pane:
         self.center = numpy.array([0, 0, self.z_offset]) + self.install_error
         self.theta_x = theta_x
         self.theta_y = theta_y
-        self.theta_z = theta_z
     
 
-    def pixels(self) -> List[Pixel]:
+    def __pixels__(self) -> List[Pixel]:
         """Return all pixels of this pane.
 
         Warning
@@ -210,36 +230,20 @@ class Pane:
             numpy.array([pixel_width/2, pixel_height/2, 0])
             - numpy.array([self.width/2, self.height/2, 0])
         )  
-             
+        
+        # defining the rotational misalignment, zyx represent the rotation
+        # directions, degrees : True for angle in degrees,
+        # False for angle in radians.
+        
         r = R.from_euler(
             'zyx',
             [self.theta_z, self.theta_y, self.theta_x],
             degrees=True
         )
-       
+        # applying the rotation to the offset_vectors
         offset_vectors = r.apply(offset_vectors)
-        
-        """theta_x = 90
-        theta_y = 90
-        theta_z = 90
-        
-        Rz = numpy.array(
-                  [[1, 0, 0],
-                  [ 0, m.cos(theta_z),-m.sin(theta_z)],
-                  [ 0, m.sin(theta_z), m.cos(theta_z)]]
-                  )
-        Rx = numpy.array([[1, 0, 0],
-                   [ 0, m.cos(theta_x),-m.sin(theta_x)],
-                   [ 0, m.sin(theta_x), m.cos(theta_x)]])
+               
        
-        Ry = numpy.array([[m.cos(theta_y), 0, m.sin(theta_y)],
-                   [0, 1, 0],
-                   [-m.sin(theta_y), 0, m.cos(theta_y)]])
-       
-        offset_vectors = numpy.dot(offset_vectors,Rz)"""
-                  
-        print(offset_vectors)
-        
         return (
             + self.center
             + offset_vectors
