@@ -36,7 +36,7 @@ class OrientationGenerator:
 		'''Generate a random sphere vector and check whether its orientation aligns with that of the opening angle.'''
 		while True:
 			orientation_vector = self.generate_random_sphere_vector()
-			if orientation_vector.dot(self._direction) < np.cos(self._opening_angle):
+			if orientation_vector.dot(self._direction) > np.cos(self._opening_angle):
 				return orientation_vector
 
 class PathGenerator:
