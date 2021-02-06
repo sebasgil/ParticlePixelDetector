@@ -41,7 +41,7 @@ class OrientationGenerator:
 
 class PathGenerator:
 	"""Generates the path that a single particle takes through the detector."""
-	def __init__(self, geometry: DetectorGeometry, samples: int, time_step: float):
+	def __init__(self, geometry: DetectorGeometry, samples: Union[int, str], time_step: Union[float, str]):
 		"""
 		Set the initial orientation and velocity for a particle path 
 	      	ParticlePath.
@@ -57,8 +57,16 @@ class PathGenerator:
 		"""    
 		self._geometry = DetectorGeometry()
 		self._orientation_instance = OrientationGenerator(self._geometry, 0)
-		self._samples = samples
-		self._time_step = time_step
+		if time_step == 'auto' and samples == 'auto':
+			detector_size = max(map(lambda p: np.linalg.norm(p.center - geom_instance.source_position), pane_instance.z_offset))
+			flight_time = detector_size / velocity
+			self._time_step = velocity / (2*self.geometry.heuristic_max_pixel_radius)
+			self._samples = flight_time / time_step
+		elif isinstance(time_step, float) and isinstance(samples, int):
+			self._samples = samples			 
+			self._time_step = time_step
+		else:
+			raise ValueError("time_step and samples must be both set to auto or assigned a float and int value respectively.")
 
 	def generate_velocity(self):
 		"""
@@ -73,13 +81,15 @@ class PathGenerator:
 
 			velocity: array
 		"""
-		percentage = np.random.uniform(0.05,0.99)
-		speed = 2.99792e8*percentage
-		geometry_instance = DetectorGeometry()
-		particle_instance = OrientationGenerator(geometry_instance, 0)
-		particle_orientation = particle_instance.generate_orientation_vector()
-		velocity = speed*particle_orientation
-		return velocity
+		return self._velocity
+		# Debugging and future commits for variable velocity
+		# percentage = np.random.uniform(0.05,0.99)
+		# speed = 2.99792e8*percentage
+		# geometry_instance = DetectorGeometry()
+		# particle_instance = OrientationGenerator(geometry_instance, 0)
+		# particle_orientation = particle_instance.generate_orientation_vector()
+		# velocity = speed*particle_orientation
+		# return velocity
 		
 	def generate_coordinates(self, samples):
 		"""
@@ -97,6 +107,8 @@ class PathGenerator:
 		coordinates[0] = self._geometry.source_position
 		particle_velocity = self.generate_velocity()
 		for index in range(samples - 1):		
-#		for index in enumerate(np.arange(0., samples, self._time_step)):
+		#for index in enumerate(np.arange(0., samples, self._time_step)):
 			coordinates[index + 1] = coordinates[index] + particle_velocity*self._time_step
-		return coordinates
+		times = np.arange(0., self._time_step*self._samples, step=self._time_step)
+		assert len(coordinates) == len(times)
+		return coordinates, times

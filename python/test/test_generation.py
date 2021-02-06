@@ -45,12 +45,12 @@ def test_path_coordinates():
 	test_coordinates = path_instance.generate_coordinates(trial_samples)
 	assert test_coordinates.any() != 0.
 	# check that generated particle has enough samples to go close to panes
-	# assert
+	assert
 	# max(map(lambda p: np.linalg.norm(p.center - geom_instance.source_position), pane_instance.z_offset))
 
-#def test_source_on():
+def test_source_on():
 #	"""Test that the source can generate particle trajectories in a Poisson process"""
 	
-#def test_path_intersections():
+def test_path_intersections():
 #	"""Test that particle events are not simultaneously instantiated
 #	and that particle paths do not intersect each other."""
