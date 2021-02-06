@@ -32,6 +32,9 @@ class Reconstructor:
         # TODO: wording
         event: The event whose original path is to be reconstructed.
         """
+        
+        check_pixel_info(event.get_activated_pixel_positions())
+
         reconstructed_path = ReconstructedPath(
             event.get_id(),
             find_direction(
@@ -162,7 +165,14 @@ def relative_error(pixel_info, number_of_iterations):
 
     return relative_error
 
+def check_pixel_info(pixel_info):
+    """
+    Checks for degenerate points in pixel_info
+    """ 
 
-
+    for point_1 in pixel_info:
+        for point_2 in pixel_info:
+            if (point_1 == point_2).all():
+                raise Exception("There is atleast one repeated point") 
 
 
