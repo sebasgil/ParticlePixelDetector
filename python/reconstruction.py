@@ -172,9 +172,10 @@ def check_pixel_info(pixel_info):
     Checks for degenerate points in pixel_info
     """ 
 
-    for point_1 in pixel_info:
-        for point_2 in pixel_info:
+    for (idx_1, point_1) in enumerate(pixel_info):
+        for (idx_2, point_2) in enumerate(pixel_info):
+            if idx_1 == idx_2:
+                break
             if (point_1 == point_2).all():
                 raise ValueError("There is atleast one repeated point in the points provided.")
-                break 
 
