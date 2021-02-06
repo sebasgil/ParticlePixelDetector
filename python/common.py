@@ -16,20 +16,20 @@ EventId = int
 
 
 # TODO: employ singleton pattern
-class EventIdGenerator:
+class EventFactory:
     """
-    Generate event ids.
+    Create new Events, each with a unique id.
 
-    Used to generate unique identifiers for events. These unique
+    Used to create new events with unique identifiers. These unique
     identifiers might be used for example in saving events to external
     storage (e.g. a file, a database).
     """
 
     def __init__(self):
-        """Create a new `EventId` generator."""
+        """Create a new `EventFactory`"""
         self.__counter = 0
 
-    def new_id(self) -> EventId:
+    def _new_id(self) -> EventId:
         """Return a new unique id."""
         # save old counter state, to be returned
         # this ensures the ids start at 0
@@ -38,6 +38,19 @@ class EventIdGenerator:
         self.__counter += 1
         return new_id
 
+    def new_event(self, activation_times, pixel_positions):
+        """
+        Return a new Event with a unique id and the given time and pixel data.
+        
+        Parameters
+        ----------
+        activation_times: numpy array
+            An (N,) array of activation times of pixels
+        pixel_positions: numpy array
+            An (N, 3) array of positions of activated pixels
+        """
+        return Event(self._new_id(), activation_times, pixel_positions)
+
 
 class Event:
     """
@@ -45,13 +58,24 @@ class Event:
 
     An event is the result of a single particle passing through the
     detector. It contains all of the detectors measurements.
+
+    WARNING
+    -------
+    Events should only be created via the `new_event` method on `common.EventFactory`
     """
 
-    def __init__(self):
+    def __init__(self, event_id, activation_times, pixel_positions):
         """Create a new Event."""
+        self.id = event_id
+        self.activation_times = activation_times
+        self.pixel_positions = pixel_positions
 
     def get_id(self) -> EventId:
         """Return the events unique id."""
+        return self.id
+    
+    def get_activated_pixel_positions(self):
+        return self.pixel_positions
 
 
 class DetectorGeometry:
@@ -113,6 +137,8 @@ class Pane:
         self.z_offset = z_offset
         self.n_pixels_x = n_pixels_x
         self.n_pixels_y = n_pixels_y
+        ## WARNING: Assumes cube pixels !!
+        self.heuristic_max_pixel_radius = numpy.sqrt(3) * (width / n_pixels_x) / 2
         self.install_error = numpy.array([x_error, y_error, z_error])
         self.center = numpy.array([0, 0, self.z_offset]) + self.install_error 
     
