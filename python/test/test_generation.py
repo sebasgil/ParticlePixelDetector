@@ -21,19 +21,13 @@ def test_random_sphere_vector():
 	
 def test_orientation_vector():
 	"""Test generate_solid_angle to verify that the x and y components of
-	the object orientation_vector are within the opening angle size by
-	computing the rejection vector of the projection with the line of sight."""
+	the object orientation_vector are within the opening angle size."""
 	geom_instance = DetectorGeometry()
 	o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
-	opening_angle = geom_instance.source_opening_angle # * np.pi / 180
-	line_of_sight = geom_instance.source_direction
+	opening_angle = geom_instance.source_opening_angle
 	test_orientation = o_gen_instance.generate_orientation_vector()
-	cone_radius = np.linalg.norm(test_orientation)*np.tan(opening_angle)
-	test_orientation = o_gen_instance.generate_orientation_vector()
-	orientation_rejection = test_orientation - test_orientation.dot(line_of_sight)
-	assert np.linalg.norm(orientation_rejection) != 0.
-	assert np.abs(orientation_rejection[0]) < cone_radius
-	assert np.abs(orientation_rejection[1]) < cone_radius
+	assert test_orientation[0] < np.cos(opening_angle)
+	assert test_orientation[1] < np.sin(opening_angle)
 
 def test_particle_path():
 	"""Test"""
