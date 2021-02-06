@@ -10,7 +10,7 @@ geom_instance = DetectorGeometry()
 o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
 trial_samples = 10
 trial_time_step = 0.1 # we don't know what this is.
-path_instance = generation.PathGenerator(o_gen_instance, trial_samples, trial_time_step)
+path_instance = generation.PathGenerator(o_gen_instance, 420, trial_samples, trial_time_step)
 
 def test_random_sphere_vector():
 	"""Test generate_random_sphere_vector to verify that the object 
@@ -42,15 +42,15 @@ def test_path_coordinates():
 	"""Test generate_coordinates to make sure that a non-empty array is returned and that the
 	generated particle passes close enough to the panes to be detectable"""
 	# check that coordinates array is not empty
-	test_coordinates = path_instance.generate_coordinates(trial_samples)
+	test_coordinates, _ = path_instance.generate_coordinates(trial_samples)
 	assert test_coordinates.any() != 0.
 	# check that generated particle has enough samples to go close to panes
-	assert
+	# assert
 	# max(map(lambda p: np.linalg.norm(p.center - geom_instance.source_position), pane_instance.z_offset))
 
-def test_source_on():
+#def test_source_on():
 #	"""Test that the source can generate particle trajectories in a Poisson process"""
 	
-def test_path_intersections():
+#def test_path_intersections():
 #	"""Test that particle events are not simultaneously instantiated
 #	and that particle paths do not intersect each other."""

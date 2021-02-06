@@ -1,4 +1,5 @@
 """Event generation."""
+from typing import Union
 import numpy  as np
 from common import DetectorGeometry
 
@@ -41,7 +42,7 @@ class OrientationGenerator:
 
 class PathGenerator:
 	"""Generates the path that a single particle takes through the detector."""
-	def __init__(self, geometry: DetectorGeometry, samples: Union[int, str], time_step: Union[float, str]):
+	def __init__(self, geometry: DetectorGeometry, speed, samples: Union[int, str], time_step: Union[float, str]):
 		"""
 		Set the initial orientation and velocity for a particle path 
 	      	ParticlePath.
@@ -56,6 +57,7 @@ class PathGenerator:
 			The elapsed time between samples of the path
 		"""    
 		self._geometry = DetectorGeometry()
+		self._speed = speed
 		self._orientation_instance = OrientationGenerator(self._geometry, 0)
 		if time_step == 'auto' and samples == 'auto':
 			detector_size = max(map(lambda p: np.linalg.norm(p.center - geom_instance.source_position), pane_instance.z_offset))
@@ -81,15 +83,15 @@ class PathGenerator:
 
 			velocity: array
 		"""
-		return self._velocity
-		# Debugging and future commits for variable velocity
-		# percentage = np.random.uniform(0.05,0.99)
-		# speed = 2.99792e8*percentage
-		# geometry_instance = DetectorGeometry()
-		# particle_instance = OrientationGenerator(geometry_instance, 0)
-		# particle_orientation = particle_instance.generate_orientation_vector()
-		# velocity = speed*particle_orientation
-		# return velocity
+		#Debugging and future commits for variable velocity
+		#percentage = np.random.uniform(0.05,0.99)
+		speed = self._speed
+		#speed = 2.99792e8*percentage
+		geometry_instance = DetectorGeometry()
+		particle_instance = OrientationGenerator(geometry_instance, 0)
+		particle_orientation = particle_instance.generate_orientation_vector()
+		velocity = speed*particle_orientation
+		return velocity
 		
 	def generate_coordinates(self, samples):
 		"""
