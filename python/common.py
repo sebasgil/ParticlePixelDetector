@@ -201,9 +201,16 @@ class Pane:
         # ]
         offset_vectors = numpy.array([xs, ys, zs]).T
 
-        return (
+        offset_vectors = offset_vectors + (
             lower_left_corner
             + numpy.array([pixel_width/2, pixel_height/2, 0])
+            - self.center
+        )
+
+        # apply rotation matrix to offset_vectors
+
+        return (
+            + self.center
             + offset_vectors
         )
 
