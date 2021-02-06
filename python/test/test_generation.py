@@ -12,18 +12,21 @@ def test_random_sphere_vector():
 	geom_instance = DetectorGeometry()
 	o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
 	test_vector = o_gen_instance.generate_random_sphere_vector()
-	assert isinstance(test_vector, array)
+	# test assertions
+	assert isinstance(test_vector, np.ndarray)
 	assert test_vector.shape == (3,)
 	for component in test_vector:
-		assert test_vector[component] != 0.
-	assert np.linalg.norm(test_vector) == 1.0
+		assert component != 0.
+	assert np.isclose(np.linalg.norm(test_vector), 1.0)
 	
 def test_orientation_vector():
 	"""Test generate_solid_angle to verify that the x and y components of
 	the object orientation_vector are within the opening angle size by
 	computing the rejection vector of the projection with the line of sight."""
-	opening_angle = DetectorGeometry.source_opening_angle # * np.pi / 180
-	line_of_sight = DetectorGeometry.source_direction
+	geom_instance = DetectorGeometry()
+	o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
+	opening_angle = geom_instance.source_opening_angle # * np.pi / 180
+	line_of_sight = geom_instance.source_direction
 	cone_radius = np.linalg.norm(test_orientation)*np.tan(opening_angle)
 	test_orientation = OrientationGenerator.generate_solid_angle()
 	orientation_rejection = test_orientation - test_orientation.dot(line_of_sight)
