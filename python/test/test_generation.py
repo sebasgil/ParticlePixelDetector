@@ -27,8 +27,9 @@ def test_orientation_vector():
 	o_gen_instance = generation.OrientationGenerator(geom_instance, 0)
 	opening_angle = geom_instance.source_opening_angle # * np.pi / 180
 	line_of_sight = geom_instance.source_direction
+	test_orientation = o_gen_instance.generate_orientation_vector()
 	cone_radius = np.linalg.norm(test_orientation)*np.tan(opening_angle)
-	test_orientation = OrientationGenerator.generate_solid_angle()
+	test_orientation = o_gen_instance.generate_orientation_vector()
 	orientation_rejection = test_orientation - test_orientation.dot(line_of_sight)
 	assert np.linalg.norm(orientation_rejection) != 0.
 	assert np.abs(orientation_rejection[0]) < cone_radius
