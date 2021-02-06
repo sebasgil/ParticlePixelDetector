@@ -141,9 +141,10 @@ class Pane:
         self.center = numpy.array([0, 0, self.z_offset]) + self.install_error
         self.theta_x = theta_x
         self.theta_y = theta_y
+        self.theta_z = theta_z
     
 
-    def __pixels__(self) -> List[Pixel]:
+    def pixels(self) -> List[Pixel]:
         """Return all pixels of this pane.
 
         Warning
