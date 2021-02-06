@@ -4,7 +4,7 @@ from common import DetectorGeometry
 
 class OrientationGenerator:
 	"""Generates a random orientation to initialize a particle path"""
-	def __init__(self, seed:int):
+	def __init__(self, geometry: DetectorGeometry, seed:int):
 		"""
 		Initialize the random number generator      
 
@@ -21,21 +21,21 @@ class OrientationGenerator:
 		# store for debug purposes
 		self._seed = seed
 		# initialize random generator
-		self._rng = numpy.random.default_rng(self._seed)
-		self._opening_angle = DetectorGeometry.source_opening_angle
-		self._direction = DetectorGeometry.source_direction
+		self._rng = np.random.default_rng(self._seed)
+		self._opening_angle = geometry.source_opening_angle
+		self._direction = geometry.source_direction
         
-	def generate_random_sphere_vector():
+	def generate_random_sphere_vector(self):
 		'''Draw a random vector form the spherically symmetric 3D
 		normal distribution and normalize to unit length'''
 		vector = np.random.normal(size=3)
 		normalized_vector = vector / np.linalg.norm(vector)
 		return normalized_vector
 
-	def generate_orientation_vector():
+	def generate_orientation_vector(self):
 		'''Generate a random sphere vector and check whether its orientation aligns with that of the opening angle.'''
 		while True:
-			orientation_vector = get_random_sphere_vector()
+			orientation_vector = self.get_random_sphere_vector()
 			if orientation_vector.dot(self._direction) < np.cos(self._opening_angle  * np.pi/ 180):
 				return orientation_vector
 
