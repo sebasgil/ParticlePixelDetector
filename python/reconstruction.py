@@ -10,17 +10,17 @@ class ReconstructedPath:
     """
     A single reconstructed path through the Detector.
     """
-    def __init__(self, event_id, direction, centeroid):
+    def __init__(self, event_id, direction, centroid):
         self.event_id = event_id
         self.direction = direction
-        self.centeroid = centeroid
+        self.centroid = centroid
 
 
 class Reconstructor:
     """
     Reconstructs paths from events.
     """
-    def __init__(self, number_of_iterations):
+    def __init__(self, number_of_iterations: int):
         self.number_of_iterations = number_of_iterations
 
     def reconstruct_from_event(self, event: Event) -> ReconstructedPath:

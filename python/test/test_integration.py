@@ -10,7 +10,6 @@ import reconstruction
 
 # For now this just serves as an example of how the library is
 # intended to be used.
-@pytest.mark.xfail  # expect this test to fail
 def test_implementated():
     """
     An example of how the program is to be used.
@@ -20,11 +19,11 @@ def test_implementated():
     """
     # Setup
     # a detector geometry, passed to all compoents as configuration
-    geometry = common.DetectorGeometry()
+    geometry = common.DetectorGeometry(n_pixels=20)
     # initialize a new event generator
     event_generator = simulation.EventGenerator(geometry)
-    # initialize a new event reconstructor
-    reconstructor = reconstruction.Reconstructor(geometry)
+    # initialize a new event reconstructor with 10 iterations for the internal algorithm
+    reconstructor = reconstruction.Reconstructor(10)
 
     # generate a single event
     event = event_generator.get_random_event() # pylint: disable=assignment-from-no-return
