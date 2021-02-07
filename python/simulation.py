@@ -23,7 +23,7 @@ class EventGenerator:
     def __init__(self, geometry: DetectorGeometry):
         self.geometry = geometry
         self.panes = self.geometry.panes
-        self.path_generator = PathGenerator(geometry)
+        self.path_generator = PathGenerator(geometry, geometry.source_speed, 'auto', 'auto')
         self.event_factory = EventFactory()
 
     def get_random_event(self):
@@ -31,18 +31,20 @@ class EventGenerator:
        validates them and returns a list of triggered pixels.
        """
         particle_path, time_path = self._generate_random_path()
+        # TODO: remove
+        # print("particle_path: {}".format(particle_path))
 
         # arrays for storing the hits' data
         activation_times = np.array([])
-        pixel_positions = np.array([])
+        pixel_positions = []
 
         for pane in self.panes:
             pane_pixel_positions = pane.pixel_positions()
             intersection_idxs = self._search_for_intersections(particle_path, pane_pixel_positions)
 
-            pane_intersection_point = pane_pixel_positions[intersection_idxs[0]]
-            path_intersection_point = particle_path[intersection_idxs[1]]
-            intersection_time: float = time_path[intersection_idxs[1]]
+            pane_intersection_point = pane_pixel_positions[intersection_idxs[1]]
+            path_intersection_point = particle_path[intersection_idxs[0]]
+            intersection_time: float = time_path[intersection_idxs[0]]
 
             triggered_pixel = pane.get_pixel_from_position(pane_intersection_point)
             heuristic_max_pixel_radius = pane.heuristic_max_pixel_radius
@@ -50,15 +52,23 @@ class EventGenerator:
             if self._check_if_intersection_valid(path_intersection_point, triggered_pixel, heuristic_max_pixel_radius):
                 # hit is valid save activation time and pixel position
                 # TODO: improve performance: np.append always copies the array
-                np.append(activation_times, intersection_time)
-                np.append(pixel_positions, path_intersection_point)
+                activation_times = np.append(activation_times, intersection_time)
+                pixel_positions.append(path_intersection_point)
 
-        event = self.event_factory.new_event(activation_times, pixel_positions)
+        event = self.event_factory.new_event(activation_times, np.array(pixel_positions))
         return event
 
 
     def _check_if_intersection_valid(self, path_intersection_point, pixel: Pixel, max_radius):
         dist = np.linalg.norm(path_intersection_point - pixel.position)
+        # TODO: remove
+        # if dist > max_radius:
+        #     print("intersection invalid:")
+        #     print("path_intersection_point: ", path_intersection_point)
+        #     print("pixel position:", pixel.position)
+        #     print("max_radius: ", max_radius)
+        # else:
+        #     print("intersection valid")
         return dist <= max_radius
 
     def _search_for_intersections(self, detector_pane, random_path):

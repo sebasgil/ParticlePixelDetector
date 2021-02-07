@@ -39,10 +39,10 @@ def test_particle_velocity():
 	assert test_speed*trial_samples > detector_length
 
 def test_path_coordinates():
-	"""Test generate_coordinates to make sure that a non-empty array is returned and that the
+	"""Test generate_random_path to make sure that a non-empty array is returned and that the
 	generated particle passes close enough to the panes to be detectable"""
 	# check that coordinates array is not empty
-	test_coordinates, _ = path_instance.generate_coordinates(trial_samples)
+	test_coordinates, _ = path_instance.generate_random_path(trial_samples)
 	assert test_coordinates.any() != 0.
 	# check that generated particle has enough samples to go close to panes
 	# assert
