@@ -1,11 +1,19 @@
 default:
   image: continuumio/anaconda3:2020.11
   before_script:
-    - conda install -c anaconda pytest
+    - conda install -c anaconda pytest sphinx
   
 stages:
   - test
+  - doc
 
 tests:
   stage: test
   script: "python3 -m pytest --doctest-modules ./python"
+
+doc:
+  stage: doc
+  script: "cd docs; make html"
+  artifacts:
+    paths:
+      - docs/_build
