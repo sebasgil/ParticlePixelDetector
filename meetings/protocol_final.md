@@ -76,9 +76,9 @@ This should be the last meeting. In lieu of writing a separate document for the 
 ### Nermine
 
 ### Varun
-*
-*
-*
+* Merged ReconSim to Master
+* Group made excellent progress
+* Many branches merged to required branches
 ### Shobith
 
 ### Sebastián
