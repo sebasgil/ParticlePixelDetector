@@ -41,5 +41,3 @@ def test_implementated():
     assert path is not None
     assert isinstance(path.direction, np.ndarray)
     assert path.direction.shape == (3,)
-
-    assert False
