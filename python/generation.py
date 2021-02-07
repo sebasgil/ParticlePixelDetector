@@ -63,9 +63,11 @@ class PathGenerator:
             detector_size = max(map(lambda p: np.linalg.norm(p.center - self._geometry.source_position), self._geometry.panes))
             flight_time = detector_size / self._speed
             self._time_step: float = self._geometry.panes[0].heuristic_max_pixel_radius / (2 * self._speed)
-            print("calculatedd time_step to {} / (2 * {}) = {}".format(self._speed, self._geometry.panes[0].heuristic_max_pixel_radius, self._time_step))
+            # TODO: remove
+            # print("calculatedd time_step to {} / (2 * {}) = {}".format(self._speed, self._geometry.panes[0].heuristic_max_pixel_radius, self._time_step))
             self._samples = int(np.ceil(flight_time / self._time_step))
-            print("calculated samples to: {}/{} ~= {}".format(flight_time, self._time_step, self._samples))
+            # TODO: remove
+            # print("calculated samples to: {}/{} ~= {}".format(flight_time, self._time_step, self._samples))
         elif isinstance(time_step, float) and isinstance(samples, int):
             self._samples = samples             
             self._time_step = time_step
@@ -106,14 +108,10 @@ class PathGenerator:
             an array containing the spatial coordinates of the particle
             for the number of samples given
         """
-        print("call to generate_random_path with:")
         if samples == 'auto':
             samples = self._samples
-            print("samples = 'auto' -> samples = {} (from self._samples)".format(samples))
         elif not isinstance(samples, int):
             raise ValueError("Samples must be either 'auto' or an int.")
-        else:
-            print("samples = {}".format(samples))
 
         # initialize array of the correct shape and number of time steps
         coordinates = np.zeros([samples,3])
