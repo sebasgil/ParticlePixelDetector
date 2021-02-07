@@ -1,6 +1,7 @@
 default:
   image: continuumio/anaconda3:2020.11
   before_script:
+    - apt-get install make
     - conda install -c anaconda pytest sphinx
   
 stages:
