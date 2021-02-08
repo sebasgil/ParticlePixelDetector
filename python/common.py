@@ -10,9 +10,10 @@ from __future__ import annotations
 
 from typing import List
 import numpy  # type: ignore
-
+from scipy.spatial.transform import Rotation as R
 # type alias for event ids
 EventId = int
+
 
 
 # TODO: employ singleton pattern
@@ -113,7 +114,8 @@ class Pane:
     def __init__(
         self, uid: int, z_offset: float, width: float = 0.2, height: float = 0.2,
         n_pixels_x: int = 2000, n_pixels_y: int = 2000, 
-        z_error: float = 0, x_error: float = 0, y_error: float = 0, 
+        z_error: float = 0, x_error: float = 0, y_error: float = 0,
+        theta_x: float = 0, theta_y: float = 0, theta_z: float = 0
     ):
         """Create a new pane.
 
@@ -129,8 +131,30 @@ class Pane:
             The panes height (in the y direction).
         n_pixels_x: int
             The number of (equally spaced) pixels in the x direction.
-        n_piyels_x: int
+        n_pixels_x: int
             The number of (equally spaced) pixels in the y direction.
+        x_error: float
+            The error of alignment (translation) in the x direction.            
+        y_error: float
+            The error of alignment (translation) in the y direction.
+        z_error: float
+            The error of alignment (translation) in the z direction.
+        theta_x: float
+            The angle of rotation about the x axis representing rotational
+            misalignment.
+        theta_y: float
+            The angle of rotation about the y axis representing rotational
+            misalignment.
+        theta_z: float
+           The angle of rotation about the z axis representing rotational
+           misalignment.
+         ----------
+        Euler angles method was used in order to implement the rotational error
+        in misalignment.
+        more to this method in this page:
+        https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.from_euler.html#scipy.spatial.transform.Rotation.from_euler
+      
+            
         """
         self.uid = uid
         self.width = width
@@ -141,7 +165,10 @@ class Pane:
         ## WARNING: Assumes cube pixels !!
         self.heuristic_max_pixel_radius = numpy.sqrt(3) * (width / n_pixels_x) / 2
         self.install_error = numpy.array([x_error, y_error, z_error])
-        self.center = numpy.array([0, 0, self.z_offset]) + self.install_error 
+        self.center = numpy.array([0, 0, self.z_offset]) + self.install_error
+        self.theta_x = theta_x
+        self.theta_y = theta_y
+        self.theta_z = theta_z
     
 
     def pixels(self) -> List[Pixel]:
@@ -197,9 +224,6 @@ class Pane:
         """
         pixel_width = self.width / self.n_pixels_x
         pixel_height = self.height / self.n_pixels_y
-        lower_left_corner = (
-            self.center - numpy.array([self.width/2, self.height/2, 0])
-        )
 
         # [0, 1, 2, ... 1999]
         single_row_ns = numpy.arange(self.n_pixels_x)
@@ -228,9 +252,28 @@ class Pane:
         # ]
         offset_vectors = numpy.array([xs, ys, zs]).T
 
+        # transform into pane center coordinate system
+        # -> self.center corresponds to [0, 0, 0]
+        offset_vectors = offset_vectors + (
+            numpy.array([pixel_width/2, pixel_height/2, 0])
+            - numpy.array([self.width/2, self.height/2, 0])
+        )  
+        
+        # defining the rotational misalignment, zyx represent the rotation
+        # directions, degrees : True for angle in degrees,
+        # False for angle in radians.
+        
+        r = R.from_euler(
+            'zyx',
+            [self.theta_z, self.theta_y, self.theta_x],
+            degrees=True
+        )
+        # applying the rotation to the offset_vectors
+        offset_vectors = r.apply(offset_vectors)
+               
+       
         return (
-            lower_left_corner
-            + numpy.array([pixel_width/2, pixel_height/2, 0])
+            + self.center
             + offset_vectors
         )
 
