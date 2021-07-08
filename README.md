@@ -1,5 +1,13 @@
 # ParticlePixelDetector
 
+Note: I am not the sole owner or developer of this repository. Other creators and contributors are:
+
+* Nermine Chaabani
+* Varun Chandrasekar
+* Massin Guerdi
+* Shobith Melakanti
+* Igor Rzhin
+
 ## Example usage
 ```python
 # 1. Setup
